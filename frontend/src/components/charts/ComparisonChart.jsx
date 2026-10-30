@@ -1,23 +1,24 @@
-import React, { useState, useMemo } from 'react';
-import {
-  ResponsiveContainer,
-  LineChart,
-  Line,
-  XAxis,
-  YAxis
-} from 'recharts';
+import React, { useState, useMemo } from "react";
+import { ResponsiveContainer, LineChart, Line, XAxis, YAxis } from "recharts";
 
-export default function ComparisonChart({ data, loading = false, error = false }) {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedRegion, setSelectedRegion] = useState('All');
-  const selectedYear = '2025';
+export default function ComparisonChart({
+  data,
+  loading = false,
+  error = false,
+}) {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedRegion, setSelectedRegion] = useState("All");
+  const selectedYear = "2025";
 
   // Filter entities list based on region and search query
   const filteredEntities = useMemo(() => {
     if (!data) return [];
     return data.filter((item) => {
-      const matchRegion = selectedRegion === 'All' || item.region === selectedRegion;
-      const matchSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchRegion =
+        selectedRegion === "All" || item.region === selectedRegion;
+      const matchSearch = item.name
+        .toLowerCase()
+        .includes(searchQuery.toLowerCase());
       return matchRegion && matchSearch;
     });
   }, [data, searchQuery, selectedRegion]);
@@ -30,14 +31,19 @@ export default function ComparisonChart({ data, loading = false, error = false }
 
   return (
     <div className="chart-card comparison-card">
-      <div className="chart-header" style={{ marginBottom: '16px' }}>
+      <div className="chart-header" style={{ marginBottom: "16px" }}>
         <div className="chart-title-wrapper">
           <h3>Entity Analysis</h3>
-          <p>Explore carbon footprint profiles for specific countries or industries</p>
+          <p>
+            Explore carbon footprint profiles for specific countries or
+            industries
+          </p>
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+      <div
+        style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}
+      >
         <div className="search-field">
           <label htmlFor="search-input">Search Entity</label>
           <input
@@ -56,7 +62,7 @@ export default function ComparisonChart({ data, loading = false, error = false }
             value={selectedRegion}
             onChange={(e) => setSelectedRegion(e.target.value)}
             className="select-input"
-            style={{ height: '38px', width: '100%' }}
+            style={{ height: "38px", width: "100%" }}
           >
             <option value="All">All Regions</option>
             <option value="North America">North America</option>
@@ -81,19 +87,25 @@ export default function ComparisonChart({ data, loading = false, error = false }
           <div className="state-overlay">
             <div className="state-icon">○</div>
             <div className="state-title">No Data Selected</div>
-            <div className="state-desc">Connect a dataset to compare entity carbon statistics.</div>
+            <div className="state-desc">
+              Connect a dataset to compare entity carbon statistics.
+            </div>
           </div>
         ) : !selectedEntity ? (
           <div className="state-overlay">
             <div className="state-icon">🔎</div>
             <div className="state-title">No Entity Matches</div>
-            <div className="state-desc">No profiles found for "{searchQuery}" in {selectedRegion}.</div>
+            <div className="state-desc">
+              No profiles found for "{searchQuery}" in {selectedRegion}.
+            </div>
           </div>
         ) : (
           <div className="comparison-result-info">
             <h4>{selectedEntity.name}</h4>
-            <div className="sub">{selectedEntity.region}, latest data ({selectedYear})</div>
-            
+            <div className="sub">
+              {selectedEntity.region}, latest data ({selectedYear})
+            </div>
+
             <div className="comparison-metrics">
               <div className="comparison-metric">
                 <span>Total Emissions</span>
@@ -105,24 +117,29 @@ export default function ComparisonChart({ data, loading = false, error = false }
               </div>
             </div>
 
-            <div style={{ marginTop: '20px' }}>
-              <span className="kpi-label" style={{ fontSize: '9px', marginBottom: '8px' }}>Historical Trend</span>
-              <div style={{ height: '80px', width: '100%' }}>
+            <div style={{ marginTop: "20px" }}>
+              <span
+                className="kpi-label"
+                style={{ fontSize: "9px", marginBottom: "8px" }}
+              >
+                Historical Trend
+              </span>
+              <div style={{ height: "80px", width: "100%" }}>
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={selectedEntity.historicalTrend}>
-                    <XAxis 
-                      dataKey="year" 
-                      fontSize={9} 
-                      stroke="var(--text-secondary)" 
-                      tickLine={false} 
+                    <XAxis
+                      dataKey="year"
+                      fontSize={9}
+                      stroke="var(--text-secondary)"
+                      tickLine={false}
                       dy={4}
                     />
-                    <YAxis hide domain={['auto', 'auto']} />
-                    <Line 
-                      type="monotone" 
-                      dataKey="co2" 
-                      stroke="var(--accent)" 
-                      strokeWidth={2} 
+                    <YAxis hide domain={["auto", "auto"]} />
+                    <Line
+                      type="monotone"
+                      dataKey="co2"
+                      stroke="var(--accent)"
+                      strokeWidth={2}
                       dot={{ r: 2 }}
                     />
                   </LineChart>

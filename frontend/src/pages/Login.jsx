@@ -1,7 +1,7 @@
-import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
-import LoginForm from '../components/ui/LoginForm';
-import { useAuth } from '../hooks/useAuth';
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import LoginForm from "../components/ui/LoginForm";
+import { useAuth } from "../hooks/useAuth";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -9,7 +9,9 @@ export default function Login() {
 
   useEffect(() => {
     if (!loading && user && profile) {
-      navigate(profile.role === 'admin' ? '/admin' : '/dashboard', { replace: true });
+      navigate(profile.role === "admin" ? "/admin" : "/dashboard", {
+        replace: true,
+      });
     }
   }, [loading, user, profile, navigate]);
 

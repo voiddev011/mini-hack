@@ -1,8 +1,18 @@
-import React from 'react';
+import React from "react";
 
-export default function KpiCard({ title, value, desc, isLoading = false, isEmpty = false }) {
-  const displayValue = isLoading ? "..." : (isEmpty || !value ? "--" : value);
-  const displayDesc = isLoading ? "Loading data..." : (isEmpty || !value ? "Awaiting dataset" : desc);
+export default function KpiCard({
+  title,
+  value,
+  desc,
+  isLoading = false,
+  isEmpty = false,
+}) {
+  const displayValue = isLoading ? "..." : isEmpty || !value ? "--" : value;
+  const displayDesc = isLoading
+    ? "Loading data..."
+    : isEmpty || !value
+      ? "Awaiting dataset"
+      : desc;
 
   return (
     <div className="kpi-card">

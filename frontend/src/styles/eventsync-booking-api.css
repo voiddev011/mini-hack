@@ -1,3 +1,124 @@
 /* Narrow styles for the server-backed recurrence and bulk flows. */
-.es-desktop .es-recurring-layout{grid-template-columns:minmax(0,1.55fr) minmax(290px,.72fr);align-items:start}.es-recurring-layout .es-card{padding:24px}.es-recurring-layout .es-fields{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.es-recurring-layout .es-fields .wide{grid-column:span 3}.es-recurring-layout .es-fields label{color:#607493;font-size:10px;font-weight:700}.es-recurring-layout .es-fields input,.es-recurring-layout .es-fields select{height:38px;border:1px solid #e1e5ed;border-radius:8px;background:#fcfcfd;color:#172746;font:600 11px 'DM Sans';padding:0 10px}.es-recurring-layout .es-series-preview{position:sticky;top:18px;background:linear-gradient(145deg,#fbfaff,#f6f5fd)}.es-result-panel{margin-top:14px;padding:13px 14px;border:1px solid;border-radius:9px;font-size:11px;line-height:1.45}.es-result-panel b,.es-result-panel small{display:block}.es-result-panel p{margin:3px 0 7px}.es-result-panel.success{border-color:#ccebdc;background:#f0fbf5;color:#236547}.es-result-panel.error{border-color:#f4d5d7;background:#fff6f6;color:#9f454d}
-.es-desktop .es-bulk-workspace{padding:20px}.es-desktop .es-bulk-toolbar{padding-bottom:16px}.es-bulk-toolbar b small{color:#7a879d;font-size:10px;font-weight:500}.es-desktop .es-bulk-row{grid-template-columns:29px minmax(125px,1.5fr) minmax(105px,1fr) 112px 76px 76px 68px 58px 58px 58px 67px;gap:8px;align-items:center;padding:14px 0}.es-request-number{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:#f1edff;color:#654dcc;font:700 9px 'DM Sans'}.es-desktop .es-bulk-row input,.es-desktop .es-bulk-row select{height:36px;border-radius:8px}.es-desktop .es-bulk-row input:focus,.es-desktop .es-bulk-row select:focus,.es-recurring-layout .es-fields input:focus,.es-recurring-layout .es-fields select:focus{outline:2px solid #ded7ff;border-color:#ad9cf5}.es-desktop .es-bulk-row button{height:34px;padding:0 7px;border:1px solid #f1dadd;border-radius:8px;background:#fff7f7;color:#a94750;font:700 9px 'DM Sans'}.es-desktop .es-bulk-row small{padding:2px 4px;color:#a94750}.es-desktop .es-bulk-submit{padding:18px 2px 2px}.es-desktop .es-bulk-submit .es-primary{padding:0 18px;border-radius:8px}.es-desktop .es-status small{line-height:1.4}
+.es-desktop .es-recurring-layout {
+  grid-template-columns: minmax(0, 1.55fr) minmax(290px, 0.72fr);
+  align-items: start;
+}
+.es-recurring-layout .es-card {
+  padding: 24px;
+}
+.es-recurring-layout .es-fields {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+.es-recurring-layout .es-fields .wide {
+  grid-column: span 3;
+}
+.es-recurring-layout .es-fields label {
+  color: #607493;
+  font-size: 10px;
+  font-weight: 700;
+}
+.es-recurring-layout .es-fields input,
+.es-recurring-layout .es-fields select {
+  height: 38px;
+  border: 1px solid #e1e5ed;
+  border-radius: 8px;
+  background: #fcfcfd;
+  color: #172746;
+  font: 600 11px "DM Sans";
+  padding: 0 10px;
+}
+.es-recurring-layout .es-series-preview {
+  position: sticky;
+  top: 18px;
+  background: linear-gradient(145deg, #fbfaff, #f6f5fd);
+}
+.es-result-panel {
+  margin-top: 14px;
+  padding: 13px 14px;
+  border: 1px solid;
+  border-radius: 9px;
+  font-size: 11px;
+  line-height: 1.45;
+}
+.es-result-panel b,
+.es-result-panel small {
+  display: block;
+}
+.es-result-panel p {
+  margin: 3px 0 7px;
+}
+.es-result-panel.success {
+  border-color: #ccebdc;
+  background: #f0fbf5;
+  color: #236547;
+}
+.es-result-panel.error {
+  border-color: #f4d5d7;
+  background: #fff6f6;
+  color: #9f454d;
+}
+.es-desktop .es-bulk-workspace {
+  padding: 20px;
+}
+.es-desktop .es-bulk-toolbar {
+  padding-bottom: 16px;
+}
+.es-bulk-toolbar b small {
+  color: #7a879d;
+  font-size: 10px;
+  font-weight: 500;
+}
+.es-desktop .es-bulk-row {
+  grid-template-columns:
+    29px minmax(125px, 1.5fr) minmax(105px, 1fr)
+    112px 76px 76px 68px 58px 58px 58px 67px;
+  gap: 8px;
+  align-items: center;
+  padding: 14px 0;
+}
+.es-request-number {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #f1edff;
+  color: #654dcc;
+  font: 700 9px "DM Sans";
+}
+.es-desktop .es-bulk-row input,
+.es-desktop .es-bulk-row select {
+  height: 36px;
+  border-radius: 8px;
+}
+.es-desktop .es-bulk-row input:focus,
+.es-desktop .es-bulk-row select:focus,
+.es-recurring-layout .es-fields input:focus,
+.es-recurring-layout .es-fields select:focus {
+  outline: 2px solid #ded7ff;
+  border-color: #ad9cf5;
+}
+.es-desktop .es-bulk-row button {
+  height: 34px;
+  padding: 0 7px;
+  border: 1px solid #f1dadd;
+  border-radius: 8px;
+  background: #fff7f7;
+  color: #a94750;
+  font: 700 9px "DM Sans";
+}
+.es-desktop .es-bulk-row small {
+  padding: 2px 4px;
+  color: #a94750;
+}
+.es-desktop .es-bulk-submit {
+  padding: 18px 2px 2px;
+}
+.es-desktop .es-bulk-submit .es-primary {
+  padding: 0 18px;
+  border-radius: 8px;
+}
+.es-desktop .es-status small {
+  line-height: 1.4;
+}

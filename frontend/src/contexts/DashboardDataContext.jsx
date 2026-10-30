@@ -1,9 +1,13 @@
-import { useEffect, useMemo, useState } from 'react';
-import { dashboardDataStore } from './dashboardDataStore';
-import { getTrustCarbonData } from '../services/trustCarbonDataService';
+import { useEffect, useMemo, useState } from "react";
+import { dashboardDataStore } from "./dashboardDataStore";
+import { getTrustCarbonData } from "../services/trustCarbonDataService";
 
 export function DashboardDataProvider({ children }) {
-  const [dataState, setDataState] = useState({ data: null, loading: true, error: '' });
+  const [dataState, setDataState] = useState({
+    data: null,
+    loading: true,
+    error: "",
+  });
   const [selectedYear, setSelectedYear] = useState(null);
   const [playing, setPlaying] = useState(false);
 
@@ -12,13 +16,21 @@ export function DashboardDataProvider({ children }) {
     getTrustCarbonData()
       .then((data) => {
         if (!active) return;
-        setDataState({ data, loading: false, error: '' });
+        setDataState({ data, loading: false, error: "" });
         setSelectedYear((current) => current ?? data.years.at(-1));
       })
       .catch((error) => {
-        if (active) setDataState({ data: null, loading: false, error: error.message || 'Historical emissions data could not be loaded.' });
+        if (active)
+          setDataState({
+            data: null,
+            loading: false,
+            error:
+              error.message || "Historical emissions data could not be loaded.",
+          });
       });
-    return () => { active = false; };
+    return () => {
+      active = false;
+    };
   }, []);
 
   const years = useMemo(() => dataState.data?.years ?? [], [dataState.data]);
@@ -33,14 +45,21 @@ export function DashboardDataProvider({ children }) {
     return () => window.clearInterval(timer);
   }, [playing, years]);
 
-  const value = useMemo(() => ({
-    ...dataState,
-    years,
-    selectedYear,
-    setSelectedYear,
-    playing,
-    setPlaying,
-  }), [dataState, years, selectedYear, playing]);
+  const value = useMemo(
+    () => ({
+      ...dataState,
+      years,
+      selectedYear,
+      setSelectedYear,
+      playing,
+      setPlaying,
+    }),
+    [dataState, years, selectedYear, playing],
+  );
 
-  return <dashboardDataStore.Provider value={value}>{children}</dashboardDataStore.Provider>;
+  return (
+    <dashboardDataStore.Provider value={value}>
+      {children}
+    </dashboardDataStore.Provider>
+  );
 }

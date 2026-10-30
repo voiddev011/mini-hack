@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const NAV_SECTIONS = [
-  { label: 'Overview', href: '/' },
-  { label: 'Global', href: '/explore/global' },
-  { label: 'India', href: '/explore/india' },
-  { label: 'Industries', href: '/explore/industries' },
-  { label: 'Sources', href: '/data/sources' },
+  { label: "Overview", href: "/" },
+  { label: "Global", href: "/explore/global" },
+  { label: "India", href: "/explore/india" },
+  { label: "Industries", href: "/explore/industries" },
+  { label: "Sources", href: "/data/sources" },
 ];
 
 export default function Navbar({ isLoggedIn, isAdmin, onLogout }) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [logoutError, setLogoutError] = useState('');
+  const [logoutError, setLogoutError] = useState("");
   const navigate = useNavigate();
 
   const handleToggleMenu = () => setMenuOpen(!menuOpen);
@@ -19,34 +19,42 @@ export default function Navbar({ isLoggedIn, isAdmin, onLogout }) {
 
   const handleLogoutClick = async (e) => {
     e.preventDefault();
-    setLogoutError('');
+    setLogoutError("");
     try {
       await onLogout();
       closeMenu();
-      navigate('/');
+      navigate("/");
     } catch (error) {
-      setLogoutError(error.message || 'Unable to log out. Please try again.');
+      setLogoutError(error.message || "Unable to log out. Please try again.");
     }
   };
 
   return (
     <header className="navbar-wrapper">
       <div className="navbar">
-        <Link to="/" className="brand" aria-label="TrustCarbon home" onClick={closeMenu}>
-          <img className="brand-mark" src="/assets/trustcarbon-fingerprint.png" alt="TrustCarbon logo" />
+        <Link
+          to="/"
+          className="brand"
+          aria-label="TrustCarbon home"
+          onClick={closeMenu}
+        >
+          <img
+            className="brand-mark"
+            src="/assets/trustcarbon-fingerprint.png"
+            alt="TrustCarbon logo"
+          />
           <div className="brand-text">
             <span className="brand-name">TrustCarbon</span>
             <span className="brand-tagline">Measure. Reduce. Sustain.</span>
           </div>
         </Link>
 
-        <nav className={`nav-links ${menuOpen ? 'open' : ''}`} aria-label="Primary">
-          {NAV_SECTIONS.map(s => (
-            <Link
-              key={s.href}
-              to={s.href}
-              onClick={closeMenu}
-            >
+        <nav
+          className={`nav-links ${menuOpen ? "open" : ""}`}
+          aria-label="Primary"
+        >
+          {NAV_SECTIONS.map((s) => (
+            <Link key={s.href} to={s.href} onClick={closeMenu}>
               {s.label}
             </Link>
           ))}
@@ -58,8 +66,12 @@ export default function Navbar({ isLoggedIn, isAdmin, onLogout }) {
           {logoutError && <span role="alert">{logoutError}</span>}
           {isLoggedIn ? (
             <>
-              <Link to={isAdmin ? '/admin' : '/dashboard'} className="top-cta" onClick={closeMenu}>
-                {isAdmin ? 'Admin / DBA' : 'Personal Dashboard'}
+              <Link
+                to={isAdmin ? "/admin" : "/dashboard"}
+                className="top-cta"
+                onClick={closeMenu}
+              >
+                {isAdmin ? "Admin / DBA" : "Personal Dashboard"}
               </Link>
               <button
                 className="profile-btn"
@@ -71,16 +83,20 @@ export default function Navbar({ isLoggedIn, isAdmin, onLogout }) {
               </button>
             </>
           ) : (
-            <Link to="/login" className="top-cta" onClick={closeMenu}>Login</Link>
+            <Link to="/login" className="top-cta" onClick={closeMenu}>
+              Login
+            </Link>
           )}
 
           <button
-            className={`menu-btn ${menuOpen ? 'open' : ''}`}
+            className={`menu-btn ${menuOpen ? "open" : ""}`}
             onClick={handleToggleMenu}
             aria-label="Open menu"
             aria-expanded={menuOpen}
           >
-            <span></span><span></span><span></span>
+            <span></span>
+            <span></span>
+            <span></span>
           </button>
         </div>
       </div>

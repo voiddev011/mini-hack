@@ -1,4 +1,4 @@
-import { average } from './carbonMetrics';
+import { average } from "./carbonMetrics";
 
 function orderedValues(observations) {
   return observations
@@ -8,10 +8,11 @@ function orderedValues(observations) {
 }
 
 export function calculateTrend(observations, { startYear, endYear } = {}) {
-  return orderedValues(observations).filter((row) => (
-    (startYear === undefined || row.year >= startYear)
-    && (endYear === undefined || row.year <= endYear)
-  ));
+  return orderedValues(observations).filter(
+    (row) =>
+      (startYear === undefined || row.year >= startYear) &&
+      (endYear === undefined || row.year <= endYear),
+  );
 }
 
 export function calculateGrowthRate(observations, { startYear, endYear } = {}) {
@@ -26,33 +27,61 @@ export function calculateYearOverYearChange(observations) {
     const previous = rows[index];
     if (row.year !== previous.year + 1) return [];
     const change = row.value - previous.value;
-    return [{
-      year: row.year,
-      previousYear: previous.year,
-      value: row.value,
-      previousValue: previous.value,
-      change,
-      changePercent: previous.value === 0 ? null : (change / Math.abs(previous.value)) * 100,
-    }];
+    return [
+      {
+        year: row.year,
+        previousYear: previous.year,
+        value: row.value,
+        previousValue: previous.value,
+        change,
+        changePercent:
+          previous.value === 0
+            ? null
+            : (change / Math.abs(previous.value)) * 100,
+      },
+    ];
   });
 }
 
-export function calculateHistoricalAverage(observations, { beforeYear, window } = {}) {
+export function calculateHistoricalAverage(
+  observations,
+  { beforeYear, window } = {},
+) {
   let rows = calculateTrend(observations);
-  if (beforeYear !== undefined) rows = rows.filter((row) => row.year < beforeYear);
+  if (beforeYear !== undefined)
+    rows = rows.filter((row) => row.year < beforeYear);
   if (Number.isInteger(window) && window > 0) rows = rows.slice(-window);
   return average(rows.map((row) => row.value));
 }
 
-export function detectAcceleration(observations, { recentWindow = 3, historicalWindow = 10 } = {}) {
+export function detectAcceleration(
+  observations,
+  { recentWindow = 3, historicalWindow = 10 } = {},
+) {
   const rows = calculateTrend(observations);
-  const changes = calculateYearOverYearChange(rows)
-    .filter((change) => Number.isFinite(change.changePercent));
-  if (changes.length < recentWindow + 1 || changes.at(-1)?.year !== rows.at(-1)?.year) return null;
+  const changes = calculateYearOverYearChange(rows).filter((change) =>
+    Number.isFinite(change.changePercent),
+  );
+  if (
+    changes.length < recentWindow + 1 ||
+    changes.at(-1)?.year !== rows.at(-1)?.year
+  )
+    return null;
   const recentChanges = changes.slice(-recentWindow);
-  if (recentChanges.some((change, index) => index > 0 && change.year !== recentChanges[index - 1].year + 1)) return null;
+  if (
+    recentChanges.some(
+      (change, index) =>
+        index > 0 && change.year !== recentChanges[index - 1].year + 1,
+    )
+  )
+    return null;
   const recent = average(recentChanges.map((change) => change.changePercent));
-  const historical = average(changes.slice(0, -recentWindow).slice(-historicalWindow).map((change) => change.changePercent));
+  const historical = average(
+    changes
+      .slice(0, -recentWindow)
+      .slice(-historicalWindow)
+      .map((change) => change.changePercent),
+  );
   if (recent === null || historical === null) return null;
   return {
     recentGrowthPercent: recent,

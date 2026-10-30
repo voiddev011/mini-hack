@@ -1,4 +1,4 @@
-import { getSupabaseClient } from '../config/supabase';
+import { getSupabaseClient } from "../config/supabase";
 
 export async function signUp({ email, password, fullName }) {
   const { data, error } = await getSupabaseClient().auth.signUp({
@@ -32,9 +32,9 @@ export async function signOut() {
 
 export async function getProfile(userId) {
   const { data, error } = await getSupabaseClient()
-    .from('profiles')
-    .select('id, email, full_name, role, created_at')
-    .eq('id', userId)
+    .from("profiles")
+    .select("id, email, full_name, role, created_at")
+    .eq("id", userId)
     .single();
 
   if (error) throw error;

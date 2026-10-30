@@ -1,4 +1,4 @@
-import Papa from 'papaparse';
+import Papa from "papaparse";
 
 export function parseCountryEmissions(csvText) {
   const { data, errors } = Papa.parse(csvText, {
@@ -7,7 +7,9 @@ export function parseCountryEmissions(csvText) {
   });
 
   if (errors.length > 0) {
-    throw new Error(`Could not parse country emissions CSV: ${errors[0].message}`);
+    throw new Error(
+      `Could not parse country emissions CSV: ${errors[0].message}`,
+    );
   }
 
   return data
@@ -17,11 +19,16 @@ export function parseCountryEmissions(csvText) {
         row.Country?.trim(),
         row.Region?.trim(),
         Number(year),
-        Number(row['Kilotons of Co2']),
-        Number(row['Metric Tons Per Capita']),
+        Number(row["Kilotons of Co2"]),
+        Number(row["Metric Tons Per Capita"]),
       ];
     })
-    .filter(([country, region, year, kilotons, perCapita]) =>
-      country && region && Number.isFinite(year) && Number.isFinite(kilotons) && Number.isFinite(perCapita)
+    .filter(
+      ([country, region, year, kilotons, perCapita]) =>
+        country &&
+        region &&
+        Number.isFinite(year) &&
+        Number.isFinite(kilotons) &&
+        Number.isFinite(perCapita),
     );
 }

@@ -17,7 +17,10 @@
 .es-location-heading h1 {
   margin: 8px 0;
   color: #0a1632;
-  font: 600 clamp(38px, 5vw, 58px)/1.05 'Playfair Display', Georgia, serif;
+  font:
+    600 clamp(38px, 5vw, 58px)/1.05 "Playfair Display",
+    Georgia,
+    serif;
   letter-spacing: -1.7px;
 }
 
@@ -53,18 +56,21 @@
   color: #132344;
   text-align: left;
   cursor: pointer;
-  transition: border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease,
+    transform 150ms ease;
 }
 
 .es-location-card:hover {
   transform: translateY(-2px);
   border-color: #bfb2ff;
-  box-shadow: 0 10px 24px rgba(30, 42, 76, .09);
+  box-shadow: 0 10px 24px rgba(30, 42, 76, 0.09);
 }
 
 .es-location-card.active {
   border-color: #8c79ed;
-  box-shadow: 0 0 0 2px rgba(124, 99, 245, .12);
+  box-shadow: 0 0 0 2px rgba(124, 99, 245, 0.12);
 }
 
 .es-location-card > img {
@@ -138,7 +144,10 @@
   border-radius: 18px;
   background: #fff;
   color: #4b5c7d;
-  font: 600 10px 'DM Sans', Arial, sans-serif;
+  font:
+    600 10px "DM Sans",
+    Arial,
+    sans-serif;
   cursor: pointer;
 }
 
@@ -154,12 +163,14 @@
   border: 1px solid #e8e7e9;
   border-radius: 14px;
   background: #fff;
-  transition: border-color 150ms ease, box-shadow 150ms ease;
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease;
 }
 
 .es-hall-card.selected {
   border-color: #8c79ed;
-  box-shadow: 0 0 0 2px rgba(124, 99, 245, .12);
+  box-shadow: 0 0 0 2px rgba(124, 99, 245, 0.12);
 }
 
 .es-hall-card-image {
@@ -181,7 +192,7 @@
   left: 12px;
   padding: 6px 10px;
   border-radius: 16px;
-  background: rgba(255, 255, 255, .93);
+  background: rgba(255, 255, 255, 0.93);
   color: #654fd4;
   font-size: 10px;
   font-weight: 700;
@@ -231,7 +242,10 @@
   border-radius: 8px;
   background: #071633;
   color: white;
-  font: 600 11px 'DM Sans', Arial, sans-serif;
+  font:
+    600 11px "DM Sans",
+    Arial,
+    sans-serif;
   cursor: pointer;
 }
 
@@ -267,7 +281,7 @@
   flex-direction: column;
   align-items: flex-end;
   gap: 12px;
-  font-family: 'DM Sans', Arial, sans-serif;
+  font-family: "DM Sans", Arial, sans-serif;
 }
 
 .es-assistant-launch {
@@ -279,10 +293,15 @@
   border-radius: 50%;
   background: #7459ec;
   color: white;
-  box-shadow: 0 9px 24px rgba(69, 48, 165, .3);
-  font: 300 31px 'DM Sans', Arial, sans-serif;
+  box-shadow: 0 9px 24px rgba(69, 48, 165, 0.3);
+  font:
+    300 31px "DM Sans",
+    Arial,
+    sans-serif;
   cursor: pointer;
-  transition: transform 160ms ease, background 160ms ease;
+  transition:
+    transform 160ms ease,
+    background 160ms ease;
 }
 
 .es-assistant-launch:hover {
@@ -302,7 +321,7 @@
   border: 1px solid #e6e4ed;
   border-radius: 17px;
   background: #fff;
-  box-shadow: 0 18px 55px rgba(16, 29, 57, .2);
+  box-shadow: 0 18px 55px rgba(16, 29, 57, 0.2);
 }
 
 .es-assistant-panel > header {
@@ -373,7 +392,10 @@
   border-radius: 7px;
   background: #fff;
   color: #243552;
-  font: 11px 'DM Sans', Arial, sans-serif;
+  font:
+    11px "DM Sans",
+    Arial,
+    sans-serif;
 }
 
 .es-assistant-form > button {
@@ -384,7 +406,10 @@
   border-radius: 8px;
   background: #071633;
   color: white;
-  font: 600 11px 'DM Sans', Arial, sans-serif;
+  font:
+    600 11px "DM Sans",
+    Arial,
+    sans-serif;
   cursor: pointer;
 }
 
@@ -413,7 +438,7 @@
 
 .es-assistant-results article.top-pick {
   border-color: #a99af2;
-  box-shadow: 0 0 0 2px rgba(124, 99, 245, .1);
+  box-shadow: 0 0 0 2px rgba(124, 99, 245, 0.1);
 }
 
 .es-assistant-results article > div {
@@ -451,7 +476,10 @@
   border-radius: 7px;
   background: #eeeaff;
   color: #5740cb;
-  font: 700 10px 'DM Sans', Arial, sans-serif;
+  font:
+    700 10px "DM Sans",
+    Arial,
+    sans-serif;
   cursor: pointer;
 }
 
@@ -541,7 +569,10 @@
 .es-finder-heading h1 {
   margin: 7px 0 5px;
   color: #0a1632;
-  font: 600 clamp(32px, 3.2vw, 44px)/1.08 'Playfair Display', Georgia, serif;
+  font:
+    600 clamp(32px, 3.2vw, 44px)/1.08 "Playfair Display",
+    Georgia,
+    serif;
   letter-spacing: -1.2px;
 }
 
@@ -565,7 +596,7 @@
   border: 1px solid #e8e7ed;
   border-radius: 14px;
   background: #fff;
-  box-shadow: 0 5px 18px rgba(27, 38, 67, .04);
+  box-shadow: 0 5px 18px rgba(27, 38, 67, 0.04);
 }
 
 .es-venue-search-bar > label {
@@ -593,7 +624,10 @@
   border-radius: 7px;
   background: #fff;
   color: #243552;
-  font: 11px 'DM Sans', Arial, sans-serif;
+  font:
+    11px "DM Sans",
+    Arial,
+    sans-serif;
 }
 
 .es-venue-search-bar > button {
@@ -602,7 +636,10 @@
   border-radius: 7px;
   background: #071633;
   color: #fff;
-  font: 700 11px 'DM Sans', Arial, sans-serif;
+  font:
+    700 11px "DM Sans",
+    Arial,
+    sans-serif;
   cursor: pointer;
 }
 
@@ -676,7 +713,10 @@
   justify-content: flex-start;
 }
 
-.es-find-results-layout.filters-collapsed .es-find-filters > header button:last-child {
+.es-find-results-layout.filters-collapsed
+  .es-find-filters
+  > header
+  button:last-child {
   margin-left: 8px;
 }
 
@@ -692,7 +732,10 @@
   border-radius: 6px;
   background: #f0edff;
   color: #5740cb;
-  font: 700 10px 'DM Sans', Arial, sans-serif;
+  font:
+    700 10px "DM Sans",
+    Arial,
+    sans-serif;
   cursor: pointer;
 }
 
@@ -800,13 +843,15 @@
   border: 1px solid #e8e7ed;
   border-radius: 12px;
   background: #fff;
-  box-shadow: 0 4px 15px rgba(27, 38, 67, .04);
-  transition: transform 150ms ease, box-shadow 150ms ease;
+  box-shadow: 0 4px 15px rgba(27, 38, 67, 0.04);
+  transition:
+    transform 150ms ease,
+    box-shadow 150ms ease;
 }
 
 .es-venue-tile:hover {
   transform: translateY(-2px);
-  box-shadow: 0 10px 24px rgba(30, 42, 76, .1);
+  box-shadow: 0 10px 24px rgba(30, 42, 76, 0.1);
 }
 
 .es-venue-tile-image {
@@ -839,7 +884,7 @@
   left: 10px;
   padding: 5px 8px;
   border-radius: 16px;
-  background: rgba(255, 255, 255, .94);
+  background: rgba(255, 255, 255, 0.94);
   color: #5740cb;
   font-size: 9px;
   font-weight: 700;
@@ -920,7 +965,10 @@
   min-height: 34px;
   border: 1px solid #e2e1ea;
   border-radius: 7px;
-  font: 700 10px 'DM Sans', Arial, sans-serif;
+  font:
+    700 10px "DM Sans",
+    Arial,
+    sans-serif;
   cursor: pointer;
 }
 
@@ -1072,7 +1120,10 @@
   border-radius: 7px;
   background: #071633;
   color: #fff;
-  font: 700 10px 'DM Sans', Arial, sans-serif;
+  font:
+    700 10px "DM Sans",
+    Arial,
+    sans-serif;
   cursor: pointer;
 }
 

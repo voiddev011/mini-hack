@@ -1,5 +1,5 @@
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
 // India dataset
 const rawIndiaCSV = `States,per capita CO2 (kg per person),per capita CO (kg per person),per capita CH4 (kg per person)
@@ -32,20 +32,24 @@ Uttar Pradesh,404.26,12.40,12.87
 Uttarakhand,493.01,14.28,17.93
 West Bengal,763.13,22.69,15.99`;
 
-const indiaLines = rawIndiaCSV.trim().split('\n').slice(1);
-const indiaData = indiaLines.map(line => {
-  const [state, co2, co, ch4] = line.split(',');
+const indiaLines = rawIndiaCSV.trim().split("\n").slice(1);
+const indiaData = indiaLines.map((line) => {
+  const [state, co2, co, ch4] = line.split(",");
   return {
     state: state.trim(),
     co2PerCapita: parseFloat(co2),
     coPerCapita: parseFloat(co),
-    ch4PerCapita: parseFloat(ch4)
+    ch4PerCapita: parseFloat(ch4),
   };
 });
 
 fs.writeFileSync(
-  path.join(__dirname, '../src/data/indiaEmissions.js'),
-  `export const INDIA_EMISSIONS = ${JSON.stringify(indiaData, null, 2)};\n`
+  path.join(__dirname, "../src/data/indiaEmissions.js"),
+  `export const INDIA_EMISSIONS = ${JSON.stringify(indiaData, null, 2)};\n`,
 );
 
-console.log('Successfully written indiaEmissions.js with', indiaData.length, 'states.');
+console.log(
+  "Successfully written indiaEmissions.js with",
+  indiaData.length,
+  "states.",
+);

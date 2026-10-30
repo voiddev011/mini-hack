@@ -1,18 +1,20 @@
 const AGGREGATE_NAMES = new Set([
-  'Africa',
-  'Asia',
-  'Europe',
-  'North America',
-  'Oceania',
-  'South America',
+  "Africa",
+  "Asia",
+  "Europe",
+  "North America",
+  "Oceania",
+  "South America",
 ]);
-import { detectAnomalies } from './anomalyDetection';
-import { generateInsights } from './insightGenerator';
+import { detectAnomalies } from "./anomalyDetection";
+import { generateInsights } from "./insightGenerator";
 
 function newestRowsPerCountry(rows, beforeYear = Infinity) {
   const countries = new Map();
   rows.forEach((row) => {
-    const isCountry = row.code ? /^[A-Z]{3}$/.test(row.code) : Boolean(row.region);
+    const isCountry = row.code
+      ? /^[A-Z]{3}$/.test(row.code)
+      : Boolean(row.region);
     if (!isCountry || row.year > beforeYear) return;
     const previous = countries.get(row.country);
     if (!previous || previous.year < row.year) countries.set(row.country, row);
@@ -25,15 +27,20 @@ function getCountryCount(rows) {
 }
 
 function getWorldTrend(rows) {
-  const worldRows = rows.filter((row) => row.country.toLowerCase() === 'world');
+  const worldRows = rows.filter((row) => row.country.toLowerCase() === "world");
   const annualTotals = new Map();
 
   rows.forEach((row) => {
-    const isCountry = row.code ? /^[A-Z]{3}$/.test(row.code) : Boolean(row.region);
-    if (isCountry) annualTotals.set(row.year, (annualTotals.get(row.year) || 0) + row.co2Gt);
+    const isCountry = row.code
+      ? /^[A-Z]{3}$/.test(row.code)
+      : Boolean(row.region);
+    if (isCountry)
+      annualTotals.set(row.year, (annualTotals.get(row.year) || 0) + row.co2Gt);
   });
 
-  const totals = worldRows.length ? worldRows : [...annualTotals].map(([year, co2]) => ({ year, co2 }));
+  const totals = worldRows.length
+    ? worldRows
+    : [...annualTotals].map(([year, co2]) => ({ year, co2 }));
   return totals
     .map((row) => ({
       year: row.year,
@@ -54,13 +61,16 @@ function getRegionGrowth(rows, selectedYear) {
 
   return [...regionsByYear.entries()]
     .map(([region, regionRows]) => {
-      const ordered = regionRows.filter((row) => row.year <= selectedYear).sort((first, second) => first.year - second.year);
+      const ordered = regionRows
+        .filter((row) => row.year <= selectedYear)
+        .sort((first, second) => first.year - second.year);
       const previous = ordered.at(-2);
       const latest = ordered.at(-1);
       if (!previous || !latest || previous.co2Tonnes === 0) return null;
       return {
         region,
-        growthPercent: ((latest.co2Tonnes - previous.co2Tonnes) / previous.co2Tonnes) * 100,
+        growthPercent:
+          ((latest.co2Tonnes - previous.co2Tonnes) / previous.co2Tonnes) * 100,
         year: latest.year,
       };
     })
@@ -74,19 +84,28 @@ export function buildOverviewSummary(dataset, selectedYear) {
   const latestYear = selectedYear ?? trend.at(-1)?.year ?? years.at(-1);
   const selectedTrend = trend.filter((row) => row.year <= latestYear);
   const countries = newestRowsPerCountry(rows, latestYear);
-  const rankingYear = countries.length ? Math.max(...countries.map((row) => row.year)) : latestYear;
-  const latestCountries = countries
-    .sort((first, second) => second.co2Tonnes - first.co2Tonnes);
+  const rankingYear = countries.length
+    ? Math.max(...countries.map((row) => row.year))
+    : latestYear;
+  const latestCountries = countries.sort(
+    (first, second) => second.co2Tonnes - first.co2Tonnes,
+  );
   const latestGlobal = selectedTrend.at(-1);
   const regionGrowth = getRegionGrowth(rows, latestYear);
-  const anomalies = detectAnomalies(selectedTrend.map((row) => ({ year: row.year, value: row.co2 })), {
-    entity: 'World',
-    metric: 'CO₂ emissions (Gt)',
-  });
+  const anomalies = detectAnomalies(
+    selectedTrend.map((row) => ({ year: row.year, value: row.co2 })),
+    {
+      entity: "World",
+      metric: "CO₂ emissions (Gt)",
+    },
+  );
   const insights = generateInsights({
-    entity: 'Global emissions',
-    observations: selectedTrend.map((row) => ({ year: row.year, value: row.co2 })),
-    metricLabel: 'CO₂ emissions (Gt)',
+    entity: "Global emissions",
+    observations: selectedTrend.map((row) => ({
+      year: row.year,
+      value: row.co2,
+    })),
+    metricLabel: "CO₂ emissions (Gt)",
   });
 
   return {
@@ -104,6 +123,6 @@ export function buildOverviewSummary(dataset, selectedYear) {
     trend: selectedTrend,
     recentInsight: latestGlobal
       ? `Global annual CO₂ emissions were ${latestGlobal.co2.toFixed(2)} Gt in ${latestYear}. Historical estimate; not real-time.`
-      : 'A global annual total is not available in the selected data source.',
+      : "A global annual total is not available in the selected data source.",
   };
 }

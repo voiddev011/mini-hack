@@ -1,95 +1,622 @@
 <!doctype html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#f4f3ee"><title>EventSync — Schedule</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/light.css"><link rel="stylesheet" href="/styles.css"><script src="/app.js" defer></script><script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js" defer></script><script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/components/switch/switch.js"></script></head>
-<body><header class="masthead"><a class="brand" href="/" aria-label="EventSync home"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>event<span>sync</span></a><span class="local-badge"><span class="live-dot"></span> Connecting</span></header>
-<div class="app-shell"><aside class="sidebar"><nav aria-label="Main navigation"><button class="nav active" data-view="overview"><i data-lucide="calendar-range" aria-hidden="true"></i><span class="nav-label">Schedule</span></button><button class="nav" data-view="bookings"><i data-lucide="list-filter" aria-hidden="true"></i><span class="nav-label">Bookings</span><b id="nav-count">0</b></button><button class="nav" data-view="recurring"><i data-lucide="repeat" aria-hidden="true"></i><span class="nav-label">Recurring</span></button><button class="nav" data-view="bulk"><i data-lucide="layers" aria-hidden="true"></i><span class="nav-label">Bulk book</span></button><button class="nav" data-view="venues"><i data-lucide="map" aria-hidden="true"></i><span class="nav-label">Spaces & crew</span></button><button class="nav" data-view="activity"><i data-lucide="history" aria-hidden="true"></i><span class="nav-label">Change log</span></button></nav></aside>
-<main><div class="page"><section class="page-heading"><div><h1 id="page-title">Schedule</h1><p id="page-subtitle">Manage halls, equipment and crew in one place.</p></div><div class="heading-action"><button class="primary" id="new-booking"><i data-lucide="plus" aria-hidden="true"></i> New request</button></div></section>
-<div id="load-error" class="error-box" role="alert" hidden></div>
-<section id="overview-view" class="view"><section class="stats" aria-label="Workspace summary"><article class="stat"><div>Confirmed events</div><div class="stat-number"><strong id="stat-events">0</strong><i data-lucide="ticket-check" aria-hidden="true"></i></div><small>All dates</small></article><article class="stat"><div>Expected guests</div><div class="stat-number"><strong id="stat-guests">0</strong><i data-lucide="users" aria-hidden="true"></i></div><small>Confirmed bookings</small></article><article class="stat"><div>Halls</div><div class="stat-number"><strong>6</strong><i data-lucide="building-2" aria-hidden="true"></i></div><small>3 venues · 60–250 seats</small></article></section>
-<section class="panel schedule"><div class="panel-heading"><div><h2>Hall availability</h2></div><div class="schedule-controls"><div class="date-navigation"><button id="previous-day" aria-label="Previous day"><i data-lucide="chevron-left" aria-hidden="true"></i></button><input type="date" id="timeline-date" aria-label="Timeline date"><button id="next-day" aria-label="Next day"><i data-lucide="chevron-right" aria-hidden="true"></i></button></div><button id="today-button" class="secondary">Today</button></div></div><div class="timeline-toolbar"><div class="timeline-legend"><span><i class="legend-event"></i>Event time</span><span><i class="legend-buffer"></i>Setup and cleanup</span></div><sl-switch id="buffer-toggle" checked size="small">Show turnaround</sl-switch><label id="buffer-fallback" class="native-switch"><input type="checkbox" checked> Show turnaround</label></div><div class="timeline-scroll"><div id="timeline"></div></div><div class="panel-footer">Open 08:00–22:00 · Each booking includes 30 minutes for setup and cleanup.</div></section>
-<div class="lower-grid"><section class="panel running-order"><div class="panel-heading"><div><h2>Events on this date</h2></div><button class="text-button" data-view="bookings">Booking register <span>↗</span></button></div><div id="upcoming"></div></section><section class="insight-card"><h2>Plans changed?</h2><p>Check alternative halls and times. Your original booking stays safe until the new allocation succeeds.</p><button id="try-scenario">Try sample scenario</button><small>Loads two events when the selected date is empty.</small></section></div></section>
-<section id="bookings-view" class="view" hidden><div class="panel"><div class="panel-heading"><div><h2>All requests</h2></div><div class="filters"><input id="search" placeholder="Find an event or client" aria-label="Search bookings"><select id="status-filter" aria-label="Filter booking status"><option value="all">All statuses</option><option value="confirmed">Confirmed</option><option value="rejected">Rejected</option><option value="cancelled">Cancelled</option></select></div></div><div class="table-wrap"><table><thead><tr><th>Event and client</th><th>Schedule</th><th>Allocation</th><th>Resources</th><th>Status</th><th>Actions</th></tr></thead><tbody id="booking-rows"></tbody></table></div></div></section>
-<section id="venues-view" class="view" hidden><div class="section-note"><i data-lucide="info" aria-hidden="true"></i> Each venue has its own equipment and crew. Both halls draw from that same pool.</div><div id="venue-cards" class="venue-grid"></div></section>
-<section id="activity-view" class="view" hidden><div class="panel"><div class="panel-heading"><div><h2>Recent changes</h2><p>The last 100 booking decisions and changes.</p></div></div><div id="activity-list"></div></div></section>
-<section id="recurring-view" class="view" hidden>
-  <form id="recurring-form" class="composer">
-    <div class="composer-main">
-      <section class="panel composer-panel">
-        <div class="panel-heading"><div><h2>Series details</h2><p>One brief, a repeating calendar, and the same hall checks on every date.</p></div></div>
-        <div class="composer-body">
-          <h3 class="composer-label">Event details</h3>
-          <div class="form-grid">
-            <label>Event name<input name="title" required maxlength="140" placeholder="e.g. Weekly board review"></label>
-            <label>Client name<input name="client" required maxlength="100" placeholder="e.g. Northstar Studio"></label>
-          </div>
-          <h3 class="composer-label">Venue and guests</h3>
-          <div class="form-grid">
-            <label class="full">Preferred venue<select name="preferredVenue"><option value="A">Venue A · Atrium · 60 and 150 seats</option><option value="B">Venue B · Boulevard · 100 and 200 seats</option><option value="C">Venue C · Crescent · 80 and 250 seats</option></select></label>
-            <label>Expected guests<input name="attendees" type="number" min="1" max="100000" value="50" required></label>
-          </div>
-          <h3 class="composer-label">Recurrence and times</h3>
-          <div class="form-grid">
-            <label>First date<input name="date" type="date" required></label>
-            <label>Frequency<select name="frequency"><option value="daily">Daily</option><option value="weekly" selected>Weekly</option><option value="fortnightly">Fortnightly</option><option value="monthly">Monthly</option></select></label>
-            <label>Occurrences<input name="occurrences" type="number" min="2" max="12" value="4" required></label>
-            <label>Starts at<input name="start" type="time" min="08:30" max="21:29" value="10:00" required></label>
-            <label>Ends at<input name="end" type="time" min="08:31" max="21:30" value="13:00" required></label>
-          </div>
-          <div class="buffer-note">Includes setup and cleanup on each date: <strong id="recurring-buffer">09:30–13:30</strong></div>
-          <h3 class="composer-label">Equipment and crew</h3>
-          <div class="resource-inputs">
-            <label>Projectors<input name="projectors" type="number" min="0" max="100000" value="1" required></label>
-            <label>Audio systems<input name="audio" type="number" min="0" max="100000" value="0" required></label>
-            <label>Support staff<input name="staff" type="number" min="0" max="100000" value="2" required></label>
-          </div>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f4f3ee" />
+    <title>EventSync — Schedule</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/light.css"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+    <script src="/app.js" defer></script>
+    <script
+      src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"
+      defer
+    ></script>
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/components/switch/switch.js"
+    ></script>
+  </head>
+  <body>
+    <header class="masthead">
+      <a class="brand" href="/" aria-label="EventSync home"
+        ><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span
+        >event<span>sync</span></a
+      ><span class="local-badge"
+        ><span class="live-dot"></span> Connecting</span
+      >
+    </header>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <nav aria-label="Main navigation">
+          <button class="nav active" data-view="overview">
+            <i data-lucide="calendar-range" aria-hidden="true"></i
+            ><span class="nav-label">Schedule</span></button
+          ><button class="nav" data-view="bookings">
+            <i data-lucide="list-filter" aria-hidden="true"></i
+            ><span class="nav-label">Bookings</span
+            ><b id="nav-count">0</b></button
+          ><button class="nav" data-view="recurring">
+            <i data-lucide="repeat" aria-hidden="true"></i
+            ><span class="nav-label">Recurring</span></button
+          ><button class="nav" data-view="bulk">
+            <i data-lucide="layers" aria-hidden="true"></i
+            ><span class="nav-label">Bulk book</span></button
+          ><button class="nav" data-view="venues">
+            <i data-lucide="map" aria-hidden="true"></i
+            ><span class="nav-label">Spaces & crew</span></button
+          ><button class="nav" data-view="activity">
+            <i data-lucide="history" aria-hidden="true"></i
+            ><span class="nav-label">Change log</span>
+          </button>
+        </nav>
+      </aside>
+      <main>
+        <div class="page">
+          <section class="page-heading">
+            <div>
+              <h1 id="page-title">Schedule</h1>
+              <p id="page-subtitle">
+                Manage halls, equipment and crew in one place.
+              </p>
+            </div>
+            <div class="heading-action">
+              <button class="primary" id="new-booking">
+                <i data-lucide="plus" aria-hidden="true"></i> New request
+              </button>
+            </div>
+          </section>
+          <div id="load-error" class="error-box" role="alert" hidden></div>
+          <section id="overview-view" class="view">
+            <section class="stats" aria-label="Workspace summary">
+              <article class="stat">
+                <div>Confirmed events</div>
+                <div class="stat-number">
+                  <strong id="stat-events">0</strong
+                  ><i data-lucide="ticket-check" aria-hidden="true"></i>
+                </div>
+                <small>All dates</small>
+              </article>
+              <article class="stat">
+                <div>Expected guests</div>
+                <div class="stat-number">
+                  <strong id="stat-guests">0</strong
+                  ><i data-lucide="users" aria-hidden="true"></i>
+                </div>
+                <small>Confirmed bookings</small>
+              </article>
+              <article class="stat">
+                <div>Halls</div>
+                <div class="stat-number">
+                  <strong>6</strong
+                  ><i data-lucide="building-2" aria-hidden="true"></i>
+                </div>
+                <small>3 venues · 60–250 seats</small>
+              </article>
+            </section>
+            <section class="panel schedule">
+              <div class="panel-heading">
+                <div><h2>Hall availability</h2></div>
+                <div class="schedule-controls">
+                  <div class="date-navigation">
+                    <button id="previous-day" aria-label="Previous day">
+                      <i
+                        data-lucide="chevron-left"
+                        aria-hidden="true"
+                      ></i></button
+                    ><input
+                      type="date"
+                      id="timeline-date"
+                      aria-label="Timeline date"
+                    /><button id="next-day" aria-label="Next day">
+                      <i data-lucide="chevron-right" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                  <button id="today-button" class="secondary">Today</button>
+                </div>
+              </div>
+              <div class="timeline-toolbar">
+                <div class="timeline-legend">
+                  <span><i class="legend-event"></i>Event time</span
+                  ><span><i class="legend-buffer"></i>Setup and cleanup</span>
+                </div>
+                <sl-switch id="buffer-toggle" checked size="small"
+                  >Show turnaround</sl-switch
+                ><label id="buffer-fallback" class="native-switch"
+                  ><input type="checkbox" checked /> Show turnaround</label
+                >
+              </div>
+              <div class="timeline-scroll"><div id="timeline"></div></div>
+              <div class="panel-footer">
+                Open 08:00–22:00 · Each booking includes 30 minutes for setup
+                and cleanup.
+              </div>
+            </section>
+            <div class="lower-grid">
+              <section class="panel running-order">
+                <div class="panel-heading">
+                  <div><h2>Events on this date</h2></div>
+                  <button class="text-button" data-view="bookings">
+                    Booking register <span>↗</span>
+                  </button>
+                </div>
+                <div id="upcoming"></div>
+              </section>
+              <section class="insight-card">
+                <h2>Plans changed?</h2>
+                <p>
+                  Check alternative halls and times. Your original booking stays
+                  safe until the new allocation succeeds.
+                </p>
+                <button id="try-scenario">Try sample scenario</button
+                ><small
+                  >Loads two events when the selected date is empty.</small
+                >
+              </section>
+            </div>
+          </section>
+          <section id="bookings-view" class="view" hidden>
+            <div class="panel">
+              <div class="panel-heading">
+                <div><h2>All requests</h2></div>
+                <div class="filters">
+                  <input
+                    id="search"
+                    placeholder="Find an event or client"
+                    aria-label="Search bookings"
+                  /><select
+                    id="status-filter"
+                    aria-label="Filter booking status"
+                  >
+                    <option value="all">All statuses</option>
+                    <option value="confirmed">Confirmed</option>
+                    <option value="rejected">Rejected</option>
+                    <option value="cancelled">Cancelled</option>
+                  </select>
+                </div>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Event and client</th>
+                      <th>Schedule</th>
+                      <th>Allocation</th>
+                      <th>Resources</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="booking-rows"></tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+          <section id="venues-view" class="view" hidden>
+            <div class="section-note">
+              <i data-lucide="info" aria-hidden="true"></i> Each venue has its
+              own equipment and crew. Both halls draw from that same pool.
+            </div>
+            <div id="venue-cards" class="venue-grid"></div>
+          </section>
+          <section id="activity-view" class="view" hidden>
+            <div class="panel">
+              <div class="panel-heading">
+                <div>
+                  <h2>Recent changes</h2>
+                  <p>The last 100 booking decisions and changes.</p>
+                </div>
+              </div>
+              <div id="activity-list"></div>
+            </div>
+          </section>
+          <section id="recurring-view" class="view" hidden>
+            <form id="recurring-form" class="composer">
+              <div class="composer-main">
+                <section class="panel composer-panel">
+                  <div class="panel-heading">
+                    <div>
+                      <h2>Series details</h2>
+                      <p>
+                        One brief, a repeating calendar, and the same hall
+                        checks on every date.
+                      </p>
+                    </div>
+                  </div>
+                  <div class="composer-body">
+                    <h3 class="composer-label">Event details</h3>
+                    <div class="form-grid">
+                      <label
+                        >Event name<input
+                          name="title"
+                          required
+                          maxlength="140"
+                          placeholder="e.g. Weekly board review"
+                      /></label>
+                      <label
+                        >Client name<input
+                          name="client"
+                          required
+                          maxlength="100"
+                          placeholder="e.g. Northstar Studio"
+                      /></label>
+                    </div>
+                    <h3 class="composer-label">Venue and guests</h3>
+                    <div class="form-grid">
+                      <label class="full"
+                        >Preferred venue<select name="preferredVenue">
+                          <option value="A">
+                            Venue A · Atrium · 60 and 150 seats
+                          </option>
+                          <option value="B">
+                            Venue B · Boulevard · 100 and 200 seats
+                          </option>
+                          <option value="C">
+                            Venue C · Crescent · 80 and 250 seats
+                          </option>
+                        </select></label
+                      >
+                      <label
+                        >Expected guests<input
+                          name="attendees"
+                          type="number"
+                          min="1"
+                          max="100000"
+                          value="50"
+                          required
+                      /></label>
+                    </div>
+                    <h3 class="composer-label">Recurrence and times</h3>
+                    <div class="form-grid">
+                      <label
+                        >First date<input name="date" type="date" required
+                      /></label>
+                      <label
+                        >Frequency<select name="frequency">
+                          <option value="daily">Daily</option>
+                          <option value="weekly" selected>Weekly</option>
+                          <option value="fortnightly">Fortnightly</option>
+                          <option value="monthly">Monthly</option>
+                        </select></label
+                      >
+                      <label
+                        >Occurrences<input
+                          name="occurrences"
+                          type="number"
+                          min="2"
+                          max="12"
+                          value="4"
+                          required
+                      /></label>
+                      <label
+                        >Starts at<input
+                          name="start"
+                          type="time"
+                          min="08:30"
+                          max="21:29"
+                          value="10:00"
+                          required
+                      /></label>
+                      <label
+                        >Ends at<input
+                          name="end"
+                          type="time"
+                          min="08:31"
+                          max="21:30"
+                          value="13:00"
+                          required
+                      /></label>
+                    </div>
+                    <div class="buffer-note">
+                      Includes setup and cleanup on each date:
+                      <strong id="recurring-buffer">09:30–13:30</strong>
+                    </div>
+                    <h3 class="composer-label">Equipment and crew</h3>
+                    <div class="resource-inputs">
+                      <label
+                        >Projectors<input
+                          name="projectors"
+                          type="number"
+                          min="0"
+                          max="100000"
+                          value="1"
+                          required
+                      /></label>
+                      <label
+                        >Audio systems<input
+                          name="audio"
+                          type="number"
+                          min="0"
+                          max="100000"
+                          value="0"
+                          required
+                      /></label>
+                      <label
+                        >Support staff<input
+                          name="staff"
+                          type="number"
+                          min="0"
+                          max="100000"
+                          value="2"
+                          required
+                      /></label>
+                    </div>
+                  </div>
+                </section>
+                <section class="panel composer-panel">
+                  <div class="panel-heading">
+                    <div>
+                      <h2>Booking mode</h2>
+                      <p>How EventSync should treat the series as a whole.</p>
+                    </div>
+                  </div>
+                  <div class="composer-body">
+                    <div
+                      class="mode-grid"
+                      role="radiogroup"
+                      aria-label="Recurring booking mode"
+                    >
+                      <button
+                        type="button"
+                        class="mode-card active"
+                        data-recurring-mode="atomic"
+                        aria-pressed="true"
+                      >
+                        <span class="venue-kicker">All or nothing</span
+                        ><strong>Atomic</strong>
+                        <p>
+                          Every occurrence is reserved together, or none of them
+                          are saved.
+                        </p>
+                      </button>
+                      <button
+                        type="button"
+                        class="mode-card"
+                        data-recurring-mode="feasible"
+                        aria-pressed="false"
+                      >
+                        <span class="venue-kicker">Partial confirm</span
+                        ><strong>Feasible-only</strong>
+                        <p>
+                          Valid dates are confirmed independently. Conflicts are
+                          recorded without blocking the rest of the series.
+                        </p>
+                      </button>
+                    </div>
+                    <input type="hidden" name="mode" value="atomic" />
+                    <div class="form-actions composer-actions">
+                      <button
+                        type="submit"
+                        class="primary"
+                        id="submit-recurring"
+                      >
+                        Create series
+                      </button>
+                    </div>
+                    <div id="recurring-result" aria-live="polite"></div>
+                  </div>
+                </section>
+              </div>
+              <aside class="panel composer-aside">
+                <div class="panel-heading">
+                  <div>
+                    <h2>Occurrence preview</h2>
+                    <p id="series-summary">
+                      Dates update as you edit the schedule.
+                    </p>
+                  </div>
+                </div>
+                <div id="series-facts" class="resource-list series-facts"></div>
+                <div id="series-timeline" class="series-timeline"></div>
+                <div class="panel-footer">
+                  Open 08:00–22:00 · Each date includes 30 minutes for setup and
+                  cleanup.
+                </div>
+              </aside>
+            </form>
+          </section>
+          <section id="bulk-view" class="view" hidden>
+            <div class="bulk-summary stats" aria-label="Bulk request summary">
+              <article class="stat">
+                <div>Total requests</div>
+                <div class="stat-number">
+                  <strong id="bulk-total">1</strong>
+                </div>
+                <small>Independent event briefs</small>
+              </article>
+              <article class="stat">
+                <div>Need attention</div>
+                <div class="stat-number">
+                  <strong id="bulk-attention">1</strong>
+                </div>
+                <small>Missing or invalid fields</small>
+              </article>
+              <article class="stat">
+                <div>Booking mode</div>
+                <div class="stat-number">
+                  <strong id="bulk-mode-label">Atomic</strong>
+                </div>
+                <small id="bulk-mode-hint"
+                  >All succeed, or none are saved</small
+                >
+              </article>
+            </div>
+            <section class="panel composer-panel">
+              <div class="panel-heading">
+                <div>
+                  <h2>Booking mode</h2>
+                  <p>
+                    Each card is a separate request. Mode only controls how they
+                    are committed together.
+                  </p>
+                </div>
+              </div>
+              <div class="composer-body">
+                <div
+                  class="mode-grid"
+                  role="radiogroup"
+                  aria-label="Bulk booking mode"
+                >
+                  <button
+                    type="button"
+                    class="mode-card active"
+                    data-bulk-mode="atomic"
+                    aria-pressed="true"
+                  >
+                    <span class="venue-kicker">All or nothing</span
+                    ><strong>Atomic</strong>
+                    <p>
+                      Every request is reserved together, or none of them are
+                      saved.
+                    </p>
+                  </button>
+                  <button
+                    type="button"
+                    class="mode-card"
+                    data-bulk-mode="feasible"
+                    aria-pressed="false"
+                  >
+                    <span class="venue-kicker">Partial confirm</span
+                    ><strong>Feasible-only</strong>
+                    <p>
+                      Valid requests are confirmed independently. Conflicts stay
+                      with the request that failed.
+                    </p>
+                  </button>
+                </div>
+              </div>
+            </section>
+            <div id="bulk-cards" class="bulk-cards"></div>
+            <div class="bulk-actions">
+              <button type="button" class="secondary" id="add-bulk">
+                Add another booking
+              </button>
+              <button type="button" class="secondary" id="clear-bulk">
+                Clear requests
+              </button>
+              <button type="button" class="primary" id="submit-bulk">
+                Submit bulk booking
+              </button>
+            </div>
+            <div id="bulk-result" aria-live="polite"></div>
+          </section>
         </div>
-      </section>
-      <section class="panel composer-panel">
-        <div class="panel-heading"><div><h2>Booking mode</h2><p>How EventSync should treat the series as a whole.</p></div></div>
-        <div class="composer-body">
-          <div class="mode-grid" role="radiogroup" aria-label="Recurring booking mode">
-            <button type="button" class="mode-card active" data-recurring-mode="atomic" aria-pressed="true"><span class="venue-kicker">All or nothing</span><strong>Atomic</strong><p>Every occurrence is reserved together, or none of them are saved.</p></button>
-            <button type="button" class="mode-card" data-recurring-mode="feasible" aria-pressed="false"><span class="venue-kicker">Partial confirm</span><strong>Feasible-only</strong><p>Valid dates are confirmed independently. Conflicts are recorded without blocking the rest of the series.</p></button>
-          </div>
-          <input type="hidden" name="mode" value="atomic">
-          <div class="form-actions composer-actions">
-            <button type="submit" class="primary" id="submit-recurring">Create series</button>
-          </div>
-          <div id="recurring-result" aria-live="polite"></div>
-        </div>
-      </section>
+      </main>
     </div>
-    <aside class="panel composer-aside">
-      <div class="panel-heading"><div><h2>Occurrence preview</h2><p id="series-summary">Dates update as you edit the schedule.</p></div></div>
-      <div id="series-facts" class="resource-list series-facts"></div>
-      <div id="series-timeline" class="series-timeline"></div>
-      <div class="panel-footer">Open 08:00–22:00 · Each date includes 30 minutes for setup and cleanup.</div>
-    </aside>
-  </form>
-</section>
-<section id="bulk-view" class="view" hidden>
-  <div class="bulk-summary stats" aria-label="Bulk request summary">
-    <article class="stat"><div>Total requests</div><div class="stat-number"><strong id="bulk-total">1</strong></div><small>Independent event briefs</small></article>
-    <article class="stat"><div>Need attention</div><div class="stat-number"><strong id="bulk-attention">1</strong></div><small>Missing or invalid fields</small></article>
-    <article class="stat"><div>Booking mode</div><div class="stat-number"><strong id="bulk-mode-label">Atomic</strong></div><small id="bulk-mode-hint">All succeed, or none are saved</small></article>
-  </div>
-  <section class="panel composer-panel">
-    <div class="panel-heading"><div><h2>Booking mode</h2><p>Each card is a separate request. Mode only controls how they are committed together.</p></div></div>
-    <div class="composer-body">
-      <div class="mode-grid" role="radiogroup" aria-label="Bulk booking mode">
-        <button type="button" class="mode-card active" data-bulk-mode="atomic" aria-pressed="true"><span class="venue-kicker">All or nothing</span><strong>Atomic</strong><p>Every request is reserved together, or none of them are saved.</p></button>
-        <button type="button" class="mode-card" data-bulk-mode="feasible" aria-pressed="false"><span class="venue-kicker">Partial confirm</span><strong>Feasible-only</strong><p>Valid requests are confirmed independently. Conflicts stay with the request that failed.</p></button>
+    <dialog id="booking-dialog">
+      <form id="booking-form">
+        <div class="dialog-heading">
+          <div><h2 id="form-title">New event request</h2></div>
+          <button
+            type="button"
+            class="icon-button close-dialog"
+            aria-label="Close"
+          >
+            ×
+          </button>
+        </div>
+        <p class="form-intro">
+          Enter the brief. Hall capacity, turnaround time, equipment and crew
+          are checked together.
+        </p>
+        <div class="form-grid">
+          <label
+            >Event name<input
+              name="title"
+              required
+              maxlength="140"
+              placeholder="e.g. Annual product showcase" /></label
+          ><label
+            >Client name<input
+              name="client"
+              required
+              maxlength="100"
+              placeholder="e.g. Northstar Studio" /></label
+          ><label>Event date<input name="date" type="date" required /></label
+          ><label
+            >Expected guests<input
+              name="attendees"
+              type="number"
+              min="1"
+              max="100000"
+              value="50"
+              required /></label
+          ><label
+            >Starts at<input
+              name="start"
+              type="time"
+              min="08:30"
+              max="21:29"
+              value="10:00"
+              required /></label
+          ><label
+            >Ends at<input
+              name="end"
+              type="time"
+              min="08:31"
+              max="21:30"
+              value="13:00"
+              required /></label
+          ><label class="full"
+            >Preferred venue<select name="preferredVenue">
+              <option value="A">Venue A · Atrium · 60 and 150 seats</option>
+              <option value="B">Venue B · Boulevard · 100 and 200 seats</option>
+              <option value="C">Venue C · Crescent · 80 and 250 seats</option>
+            </select></label
+          >
+        </div>
+        <div class="buffer-note">
+          Includes setup and cleanup:
+          <strong id="buffer-preview">09:30–13:30</strong>
+        </div>
+        <h3 class="resource-label">Equipment & crew</h3>
+        <div class="resource-inputs">
+          <label
+            >Projectors<input
+              name="projectors"
+              type="number"
+              min="0"
+              max="100000"
+              value="1"
+              required /></label
+          ><label
+            >Audio systems<input
+              name="audio"
+              type="number"
+              min="0"
+              max="100000"
+              value="0"
+              required /></label
+          ><label
+            >Support staff<input
+              name="staff"
+              type="number"
+              min="0"
+              max="100000"
+              value="2"
+              required
+          /></label>
+        </div>
+        <div id="form-result" aria-live="polite"></div>
+        <div class="form-actions">
+          <button type="button" class="secondary" id="check-booking">
+            Check availability</button
+          ><button type="submit" class="primary" id="submit-booking">
+            Confirm booking ↗
+          </button>
+        </div>
+      </form>
+    </dialog>
+    <dialog id="details-dialog">
+      <div class="dialog-heading">
+        <h2>Booking details</h2>
+        <button class="icon-button close-dialog" aria-label="Close">×</button>
       </div>
-    </div>
-  </section>
-  <div id="bulk-cards" class="bulk-cards"></div>
-  <div class="bulk-actions">
-    <button type="button" class="secondary" id="add-bulk">Add another booking</button>
-    <button type="button" class="secondary" id="clear-bulk">Clear requests</button>
-    <button type="button" class="primary" id="submit-bulk">Submit bulk booking</button>
-  </div>
-  <div id="bulk-result" aria-live="polite"></div>
-</section>
-</div></main></div>
-<dialog id="booking-dialog"><form id="booking-form"><div class="dialog-heading"><div><h2 id="form-title">New event request</h2></div><button type="button" class="icon-button close-dialog" aria-label="Close">×</button></div><p class="form-intro">Enter the brief. Hall capacity, turnaround time, equipment and crew are checked together.</p><div class="form-grid"><label>Event name<input name="title" required maxlength="140" placeholder="e.g. Annual product showcase"></label><label>Client name<input name="client" required maxlength="100" placeholder="e.g. Northstar Studio"></label><label>Event date<input name="date" type="date" required></label><label>Expected guests<input name="attendees" type="number" min="1" max="100000" value="50" required></label><label>Starts at<input name="start" type="time" min="08:30" max="21:29" value="10:00" required></label><label>Ends at<input name="end" type="time" min="08:31" max="21:30" value="13:00" required></label><label class="full">Preferred venue<select name="preferredVenue"><option value="A">Venue A · Atrium · 60 and 150 seats</option><option value="B">Venue B · Boulevard · 100 and 200 seats</option><option value="C">Venue C · Crescent · 80 and 250 seats</option></select></label></div><div class="buffer-note">Includes setup and cleanup: <strong id="buffer-preview">09:30–13:30</strong></div><h3 class="resource-label">Equipment & crew</h3><div class="resource-inputs"><label>Projectors<input name="projectors" type="number" min="0" max="100000" value="1" required></label><label>Audio systems<input name="audio" type="number" min="0" max="100000" value="0" required></label><label>Support staff<input name="staff" type="number" min="0" max="100000" value="2" required></label></div><div id="form-result" aria-live="polite"></div><div class="form-actions"><button type="button" class="secondary" id="check-booking">Check availability</button><button type="submit" class="primary" id="submit-booking">Confirm booking ↗</button></div></form></dialog>
-<dialog id="details-dialog"><div class="dialog-heading"><h2>Booking details</h2><button class="icon-button close-dialog" aria-label="Close">×</button></div><div id="details-content"></div></dialog>
-<div class="toast" id="toast" role="status" hidden></div></body></html>
+      <div id="details-content"></div>
+    </dialog>
+    <div class="toast" id="toast" role="status" hidden></div>
+  </body>
+</html>

@@ -1,13 +1,21 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
     <footer className="site-footer" id="footer">
       <div className="footer-top">
         <div className="footer-brand">
-          <Link to="/" className="footer-brand-link" aria-label="TrustCarbon home">
-            <img className="footer-brand-logo" src="/assets/trustcarbon-fingerprint.png" alt="TrustCarbon logo" />
+          <Link
+            to="/"
+            className="footer-brand-link"
+            aria-label="TrustCarbon home"
+          >
+            <img
+              className="footer-brand-logo"
+              src="/assets/trustcarbon-fingerprint.png"
+              alt="TrustCarbon logo"
+            />
             <span className="brand-name">TrustCarbon</span>
           </Link>
           <span className="brand-tagline">Measure. Reduce. Sustain.</span>
@@ -34,7 +42,10 @@ export default function Footer() {
       </div>
 
       <div className="footer-bottom">
-        <span>© {new Date().getFullYear()} TrustCarbon. Historical context by Our World in Data; detailed sources by Climate TRACE.</span>
+        <span>
+          © {new Date().getFullYear()} TrustCarbon. Historical context by Our
+          World in Data; detailed sources by Climate TRACE.
+        </span>
       </div>
     </footer>
   );
