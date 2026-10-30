@@ -66,4 +66,4 @@ Tests cover allocation, the PDF sample, buffered boundaries, resource peaks, dat
 
 The backend accepts its own origin and the local Vite origins on ports 5173 and 4173. Override the comma-separated ALLOWED_ORIGINS setting when using another frontend origin. If changing the backend PORT, update the Vite proxy target too. The development frontend uses a fixed port to keep origin validation predictable.
 
-Older TrustCarbon source and assets remain for reference; the active app does not initialize Supabase authentication or require its credentials.
+The frontend contains only the active EventSync app and its shared error boundary. It does not initialize external authentication or require third-party credentials.

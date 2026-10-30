@@ -63,4 +63,4 @@ The implementation addresses the mandatory functionality and includes useful inn
 - Complete the manual browser acceptance sequence. Automated verification does not cover every rendered interaction or layout.
 - Record the original source, creator and usage licence for each venue photograph, or replace it with an asset your team owns or is permitted to use. Those records are currently missing; filenames alone do not establish permission.
 - Run the backend against its normal database for the final demo. Keep the frontend on the documented origin so the API proxy/origin settings agree.
-- Keep both frontend and backend with the shared directory when submitting the project. Explain that old TrustCarbon files are reference material and are not part of the active booking app.
+- Keep both frontend and backend with the shared directory when submitting the project. The frontend is the active EventSync application.

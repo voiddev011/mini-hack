@@ -8,22 +8,11 @@
     "build": "vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "test": "vitest run",
-    "verify:phase4": "node scripts/verify-phase4.mjs",
-    "docs:phase4": "node scripts/build-phase4-docs.mjs"
+    "test": "vitest run"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.117.3",
-    "d3-geo": "^3.1.1",
-    "i18n-iso-countries": "^7.14.0",
-    "papaparse": "^5.7.0",
-    "pdfjs-dist": "^6.4.299",
     "react": "^19.2.8",
-    "react-dom": "^19.2.8",
-    "react-router-dom": "^7.18.2",
-    "recharts": "^3.10.1",
-    "topojson-client": "^3.1.0",
-    "world-atlas": "^2.0.2"
+    "react-dom": "^19.2.8"
   },
   "devDependencies": {
     "@types/react": "^19.2.17",
