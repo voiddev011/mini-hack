@@ -1,31 +1,9 @@
-# Logs
-logs
+# Root orchestration ignores
+frontend/node_modules/
+frontend/dist/
+backend/node_modules/
+backend/data/
 *.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
-node_modules/
-dist/
-dist-ssr/
-*.local
-coverage/
 .env
 .env.*
 !.env.example
-.env.local
-.env.*.local
-trustc.zip
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?

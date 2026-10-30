@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>EventSync — Light and dark theme pairs</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f5f4f1;color:#302e2c;font:15px/1.5 'Segoe UI',Arial,sans-serif}button,select,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible{outline:3px solid #7a6b5b;outline-offset:3px}[hidden]{display:none!important}.demo-shell{max-width:1500px;margin:auto;padding:30px 32px 40px}.intro{display:flex;justify-content:space-between;gap:25px;align-items:flex-start;margin-bottom:24px}.intro h1{font-size:28px;font-weight:650;letter-spacing:-.7px;margin:0 0 8px}.intro p{font-size:14px;color:#66615c;margin:0;max-width:680px}.demo-label{font-size:12px;color:#73675a;padding:7px 10px;background:#eae5dd;border-radius:4px;white-space:nowrap}.chooser{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:24px}.chooser button{border:1px solid #d3cec7;border-radius:5px;padding:9px 13px;background:#fff;color:#524b44;font-size:13px}.chooser button[aria-pressed=true]{background:#36312b;color:#fff;border-color:#36312b}.comparison{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}.comparison.focused{grid-template-columns:1fr;max-width:1250px;margin:auto}.theme-card{min-width:0;background:white;border-radius:8px;overflow:hidden;border:1px solid #d8d3cb}.theme-info{padding:18px 21px;display:flex;align-items:center;justify-content:space-between;gap:15px;background:#fff}.theme-info h2{font-size:18px;font-weight:600;margin:0 0 4px;letter-spacing:-.3px}.theme-info p{font-size:13px;color:#6c655e;margin:0}.theme-info button{padding:7px 11px;background:#fff;border:1px solid #ccc5bc;border-radius:4px;font-size:13px;color:#514a43;white-space:nowrap}.swatches{display:flex;gap:5px;margin-top:11px}.swatch{height:15px;width:26px;border:1px solid #0002;border-radius:3px}.board{background:var(--bg);color:var(--ink);border-top:1px solid var(--border);font-size:13px;min-height:540px}.board button{color:inherit}.board-header{display:flex;justify-content:space-between;align-items:center;gap:15px;background:var(--panel);padding:14px 19px}.board-logo{font-size:24px;font-weight:700;letter-spacing:-1.3px;display:flex;align-items:center}.board-logo>span{font-weight:400}.logo-mark{display:inline-flex;gap:3px;align-items:center;margin-right:11px;transform:rotate(-20deg)}.logo-mark i{display:block;height:21px;width:5px;background:var(--accent)}.logo-mark i:nth-child(2){height:16px}.logo-mark i:nth-child(3){height:11px}.connected{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:12px}.connected:before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent)}.board-layout{display:grid;grid-template-columns:112px minmax(0,1fr)}.board-nav{padding:16px 9px;display:flex;flex-direction:column;gap:4px}.board-nav button{display:block;text-align:left;width:100%;border:0;background:transparent;color:var(--muted);padding:10px;border-radius:4px;font-size:12px}.board-nav button[aria-pressed=true]{background:var(--accent-soft);color:var(--active-text);font-weight:600}.board-main{padding:17px 18px 18px 7px;min-width:0}.board-title{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:17px}.board-title h3{font-size:24px;font-weight:600;letter-spacing:-.6px;margin:0 0 3px}.board-title p{font-size:12px;margin:0;color:var(--muted)}.board .new-request{border:0;padding:9px 12px;border-radius:4px;background:var(--accent);color:var(--on-accent);font-size:12px;font-weight:550;white-space:nowrap}.summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:15px}.summary>div{padding:11px 12px;border-radius:4px;background:var(--summary)}.summary span{font-size:12px;color:var(--muted);display:block;white-space:nowrap}.summary strong{display:block;font-size:27px;font-weight:550;letter-spacing:-.5px;margin-top:2px}.schedule-panel{background:var(--panel);border-radius:4px;overflow:hidden}.schedule-heading{padding:16px 15px 14px;display:flex;justify-content:space-between;gap:12px;align-items:center}.schedule-heading h4{font-size:16px;font-weight:600;margin:0}.date{font-size:12px;color:var(--muted);white-space:nowrap}.schedule-legend{display:flex;gap:15px;font-size:12px;padding:0 15px 16px;color:var(--muted)}.schedule-legend>span{display:flex;align-items:center;gap:6px}.schedule-legend i{display:inline-block;width:9px;height:9px;background:var(--event-a);border:1px solid var(--event-a-text);border-radius:2px}.schedule-legend .buffer{background:repeating-linear-gradient(135deg,var(--panel),var(--panel) 2px,var(--event-a) 2px,var(--event-a) 4px)}.timetable{padding:0 15px 10px;overflow:auto}.axis,.row{display:grid;grid-template-columns:43px minmax(0,1fr);min-width:300px}.axis{font-size:12px;color:var(--muted);padding-bottom:9px}.times{position:relative;height:18px}.times span{position:absolute;transform:translateX(-50%)}.times span:first-child{left:0;transform:none}.times span:nth-child(2){left:28.571%}.times span:nth-child(3){left:57.143%}.times span:nth-child(4){left:85.714%}.times span:last-child{left:100%;transform:translateX(-100%)}.row{min-height:52px}.row:nth-child(even){background:var(--row)}.hall{display:flex;align-items:center;font-size:13px;font-weight:550;padding-left:5px}.lane{position:relative;background:repeating-linear-gradient(to right,transparent,transparent calc(25% - 1px),var(--grid) calc(25% - 1px),var(--grid) 25%)}.event{display:flex;align-items:center;position:absolute;height:37px;top:7px;border-radius:3px;overflow:hidden;background:repeating-linear-gradient(135deg,var(--event-a),var(--event-a) 2px,var(--panel) 2px,var(--panel) 4px);border:1px solid var(--event-a);color:var(--event-a-text);font-size:12px;font-weight:550;padding:0 7px}.event span{display:block;background:var(--event-a);height:100%;width:100%;padding:8px 5px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.event.b{background:var(--event-b);color:var(--event-b-text);border-color:var(--event-b)}.event.b span{background:var(--event-b)}.event.c{background:var(--event-c);color:var(--event-c-text);border-color:var(--event-c)}.event.c span{background:var(--event-c)}.open{font-size:12px;color:var(--muted);position:absolute;left:10px;top:17px}.board-note{padding:9px 15px 14px;font-size:12px;color:var(--muted)}.booking-strip{margin-top:14px;display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--panel);padding:13px 15px;border-radius:4px}.booking-strip strong{font-size:13px;font-weight:550;display:block}.booking-strip small{font-size:12px;color:var(--muted)}.status{background:var(--accent-soft);color:var(--active-text);font-size:12px;padding:4px 7px;border-radius:4px;white-space:nowrap}.board-table{width:100%;border-collapse:collapse;text-align:left;font-size:13px}.board-table th{font-size:12px;font-weight:500;color:var(--muted);padding:13px;background:var(--row)}.board-table td{padding:14px 13px}.board-table tr+tr td{border-top:1px solid var(--grid)}.board-table small{display:block;font-size:12px;color:var(--muted);margin-top:3px}.board-table td strong{font-weight:550}.table-overflow{overflow:auto}.venue-options{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:16px}.venue-option{padding:16px 12px;border-radius:4px;background:var(--row)}.venue-option>b{display:block;font-size:25px;line-height:1.2;font-weight:600;margin-bottom:12px}.venue-option strong{font-size:13px;display:block;font-weight:550}.venue-option p{font-size:12px;color:var(--muted);margin:8px 0;line-height:1.8}.request-preview{background:var(--panel);border-radius:4px;padding:17px}.request-preview h4{font-size:17px;font-weight:600;margin:0 0 14px}.request-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}.request-preview label{display:flex;flex-direction:column;gap:6px;font-size:12px;color:var(--muted)}.request-preview input{min-width:0;width:100%;padding:9px 10px;background:var(--bg);color:var(--ink);border:1px solid var(--control);border-radius:4px;font-size:13px}.request-preview .request-hint{background:var(--accent-soft);color:var(--active-text);padding:11px 12px;border-radius:4px;margin:15px 0;font-size:12px}.preview-submit{display:flex;gap:9px;flex-wrap:wrap}.board .outline-button{border:1px solid var(--control);background:transparent;border-radius:4px;padding:8px 11px;font-size:12px}.preview-result{margin:13px 0 0;background:var(--accent-soft);color:var(--active-text);padding:11px 12px;border-radius:4px;font-size:13px}.preview-result:empty{display:none}.bottom-note{font-size:13px;color:#6d655d;margin:22px 0 0}dialog{width:min(1250px,calc(100% - 28px));max-height:94vh;padding:0;background:#fff;border:0;border-radius:8px;box-shadow:0 20px 80px #0004}dialog::backdrop{background:#24201cb3}.dialog-head{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:14px 23px}.dialog-head h2{font-size:19px;font-weight:600;margin:0}.close-preview{background:#f1ede7;border:0;border-radius:4px;padding:8px 13px;font-size:13px}.expanded .board{min-height:570px}.expanded .board-layout{grid-template-columns:170px 1fr}.expanded .board-nav{padding:23px 14px}.expanded .board-nav button{font-size:14px;padding:12px}.expanded .board-main{padding:24px 27px 28px 9px}.expanded .board-title h3{font-size:29px}.expanded .board-title p{font-size:14px}.expanded .board .new-request{font-size:14px;padding:10px 15px}.expanded .summary{gap:15px;margin-bottom:20px}.expanded .summary>div{padding:14px 18px}.expanded .summary span{font-size:14px}.expanded .summary strong{font-size:30px}.expanded .schedule-heading{padding:20px 21px 17px}.expanded .schedule-heading h4{font-size:20px}.expanded .date{font-size:14px}.expanded .schedule-legend{padding:0 21px 18px;font-size:13px}.expanded .timetable{padding:0 21px 13px}.expanded .axis,.expanded .row{grid-template-columns:70px 1fr}.expanded .row{min-height:65px}.expanded .event{height:46px;top:9px;font-size:14px}.expanded .event span{padding:12px 8px}.expanded .hall{font-size:15px}.expanded .open{font-size:13px;top:23px}.expanded .board-note{font-size:13px;padding:10px 21px 17px}.expanded .booking-strip{padding:16px 21px}.expanded .booking-strip strong{font-size:14px}.expanded .booking-strip small{font-size:13px}.expanded .request-preview{padding:23px}.expanded .request-preview label,.expanded .request-preview input{font-size:14px}.expanded .venue-option{padding:22px}.expanded .venue-option p,.expanded .venue-option strong{font-size:14px}.expanded .board-table{font-size:14px}.expanded .board-table td,.expanded .board-table th{padding:17px 21px}@media(max-width:1150px){.comparison{grid-template-columns:1fr}.theme-card{max-width:900px;width:100%;margin:auto}.board-layout{grid-template-columns:140px 1fr}.board-nav button{font-size:13px}.board-main{padding:20px}.board-title h3{font-size:26px}.summary>div{padding:13px 15px}.board{min-height:540px}.intro{gap:15px}}@media(max-width:650px){.demo-shell{padding:22px 14px}.intro{display:block;margin-bottom:20px}.intro h1{font-size:24px}.demo-label{display:inline-block;margin-top:14px}.chooser{gap:7px}.chooser button{font-size:12px;padding:8px 10px}.theme-info{padding:16px;align-items:flex-start}.theme-info h2{font-size:17px}.theme-info p{max-width:220px}.board-header{padding:13px 16px}.board-logo{font-size:23px}.board-layout,.expanded .board-layout{display:block}.board-nav,.expanded .board-nav{flex-direction:row;padding:9px 10px 0;gap:4px}.board-nav button,.expanded .board-nav button{text-align:center;font-size:12px;padding:9px 7px;flex:1}.board-main,.expanded .board-main{padding:17px 13px}.board-title{align-items:flex-start;gap:8px}.board-title h3,.expanded .board-title h3{font-size:24px}.board-title p,.expanded .board-title p{font-size:12px;max-width:180px}.board .new-request,.expanded .board .new-request{padding:9px;font-size:12px}.summary{gap:7px}.summary>div,.expanded .summary>div{padding:10px}.summary span,.expanded .summary span{font-size:12px}.summary strong,.expanded .summary strong{font-size:25px}.schedule-heading,.expanded .schedule-heading{padding:16px 13px;gap:8px}.schedule-heading h4,.expanded .schedule-heading h4{font-size:16px}.date,.expanded .date{font-size:12px}.schedule-legend,.expanded .schedule-legend{padding:0 13px 15px;font-size:12px;gap:11px}.timetable,.expanded .timetable{padding:0 13px 9px}.axis,.row,.expanded .axis,.expanded .row{grid-template-columns:40px 1fr}.expanded .event{font-size:12px;height:37px;top:7px}.expanded .event span{padding:8px 5px}.expanded .row{min-height:52px}.expanded .hall{font-size:13px}.expanded .open{font-size:12px;top:17px}.board-note,.expanded .board-note{padding:10px 13px 14px;font-size:12px}.booking-strip,.expanded .booking-strip{padding:13px;flex-wrap:wrap;gap:8px}.booking-strip strong,.expanded .booking-strip strong{font-size:13px}.booking-strip small,.expanded .booking-strip small{font-size:12px}.status{font-size:12px}.board{min-height:0}.venue-options{gap:7px;padding:13px}.venue-option{padding:13px 9px}.venue-option p{font-size:12px}.request-fields{gap:10px}.request-preview,.expanded .request-preview{padding:15px}.dialog-head{padding:13px 16px}.dialog-head h2{font-size:17px}.expanded .summary{gap:7px}.expanded .venue-option{padding:13px 9px}.expanded .venue-option strong,.expanded .venue-option p{font-size:12px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+
+/* Paired comparison and the demo's own light/dark chrome. */
+:root{color-scheme:light;--demo-bg:#f5f4f1;--demo-panel:#ffffff;--demo-text:#302e2c;--demo-muted:#66615c;--demo-border:#d3cec7;--demo-soft:#eae5dd;--demo-selected:#36312b;--demo-selected-text:#ffffff;--demo-switch:#7d7468}
+:root[data-mode="dark"]{color-scheme:dark;--demo-bg:#191b20;--demo-panel:#25282f;--demo-text:#eeece7;--demo-muted:#bbb8b2;--demo-border:#575b64;--demo-soft:#373b43;--demo-selected:#e3ddd2;--demo-selected-text:#262421;--demo-switch:#c1b29b}
+body{background:var(--demo-bg);color:var(--demo-text)}
+.intro p,.bottom-note{color:var(--demo-muted)}
+.demo-label{background:var(--demo-soft);color:var(--demo-text)}
+.mode-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px;padding:15px 18px;background:var(--demo-panel);border-radius:6px}
+.mode-actions{display:flex;align-items:center;gap:20px}
+.mode-switch{position:relative;display:inline-flex;align-items:center;gap:10px;font-size:14px;cursor:pointer;white-space:nowrap;color:var(--demo-text)}
+.mode-switch input{position:absolute;left:40px;top:50%;transform:translateY(-50%);margin:0;width:46px;height:26px;opacity:0;z-index:1;cursor:pointer}
+.switch-track{display:inline-block;position:relative;width:46px;height:26px;border-radius:20px;background:#bcb6ad;border:1px solid #8b8379;flex-shrink:0}
+.switch-track::after{content:'';position:absolute;left:3px;top:3px;width:18px;height:18px;background:#fff;border-radius:50%;box-shadow:0 1px 2px #0003}
+.mode-switch input:checked+.switch-track{background:#514d64;border-color:#817a99}
+.mode-switch input:checked+.switch-track::after{transform:translateX(20px);background:#efe8ff}
+.mode-switch input:focus-visible+.switch-track{outline:3px solid var(--demo-switch);outline-offset:4px}
+#compare-button{background:var(--demo-panel);color:var(--demo-text);border:1px solid var(--demo-border);border-radius:4px;font-size:13px;padding:8px 13px}
+#compare-button[aria-pressed=true]{background:var(--demo-selected);color:var(--demo-selected-text);border-color:var(--demo-selected)}
+#mode-description{font-size:13px;color:var(--demo-muted)}
+.chooser button{background:var(--demo-panel);color:var(--demo-text);border-color:var(--demo-border)}
+.chooser button[aria-pressed=true]{background:var(--demo-selected);color:var(--demo-selected-text);border-color:var(--demo-selected)}
+.comparison,.comparison.focused{display:flex;flex-direction:column;gap:32px;max-width:none;margin:0}
+.theme-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 20px;min-width:0}
+.theme-pair.single-mode{grid-template-columns:1fr;max-width:1250px;width:100%;margin:0 auto}
+.pair-head{grid-column:1/-1}
+.pair-head h2{font-size:23px;line-height:1.3;font-weight:600;letter-spacing:-.5px;margin:0 0 5px;color:var(--demo-text)}
+.pair-head p{font-size:14px;color:var(--demo-muted);margin:0}
+.theme-card{background:var(--panel);border-color:var(--border);max-width:none}
+.theme-info{background:var(--panel);color:var(--ink);padding:14px 19px}
+.theme-info h3{font-size:15px;font-weight:600;margin:0}
+.theme-info button{background:var(--panel);color:var(--ink);border-color:var(--control)}
+.swatches{margin-top:8px}.swatch{border-color:var(--control)}
+.theme-card[data-variant="light"],.board[data-theme$="-light"]{color-scheme:light}
+.theme-card[data-variant="dark"],.board[data-theme$="-dark"]{color-scheme:dark}
+.dialog-actions{display:flex;align-items:center;gap:24px}
+.dialog-head{background:var(--demo-panel);color:var(--demo-text)}
+.close-preview{background:var(--demo-soft);color:var(--demo-text)}
+#large-preview[data-preview-mode="dark"]{--demo-panel:#25282f;--demo-text:#eeece7;--demo-soft:#373b43;--demo-switch:#c1b29b;color-scheme:dark}
+#large-preview[data-preview-mode="light"]{--demo-panel:#ffffff;--demo-text:#302e2c;--demo-soft:#eae5dd;--demo-switch:#7d7468;color-scheme:light}
+button:focus-visible{outline-color:var(--demo-switch)}
+@media(min-width:1151px){.single-mode .board-layout{grid-template-columns:160px minmax(0,1fr)}.single-mode .board-main{padding:22px}.single-mode .board-nav{padding:20px 12px}.single-mode .board-nav button{font-size:14px}.single-mode .summary{gap:14px}.single-mode .summary>div{padding:14px 17px}.single-mode .summary span{font-size:13px}.single-mode .schedule-heading h4{font-size:18px}}
+@media(max-width:1150px){.theme-pair{grid-template-columns:1fr}.theme-card{max-width:950px}.pair-head{max-width:950px;width:100%;margin:auto}.theme-pair.single-mode{max-width:950px}}
+@media(max-width:720px){.mode-toolbar{align-items:flex-start;flex-direction:column;padding:15px}.mode-actions{width:100%;justify-content:space-between;gap:12px}.dialog-head{align-items:flex-start;gap:15px;flex-wrap:wrap}.dialog-actions{gap:16px;flex-wrap:wrap}.mode-switch{font-size:13px}.pair-head h2{font-size:21px}.theme-pair{gap:12px}.comparison{gap:28px}.theme-info{padding:14px 16px}}
+
+</style>
+</head><body><main class="demo-shell"><header class="intro"><div><h1>Six themes. Two ways to see each.</h1><p>Compare light and dark pairs, or use the switch to explore one mode. The website itself stays unchanged.</p></div><span class="demo-label">Separate demo · Works offline</span></header><section class="mode-toolbar" aria-label="Display settings"><div class="mode-actions"><label class="mode-switch"><span>Light</span><input id="dark-mode" type="checkbox" role="switch" aria-label="Dark mode"><span class="switch-track" aria-hidden="true"></span><span>Dark</span></label><button id="compare-button" aria-pressed="true">Compare pairs</button></div><span id="mode-description" aria-live="polite">Light and dark shown together.</span></section><nav class="chooser" aria-label="Filter theme pairs"><button data-filter="all" aria-pressed="true">All pairs</button><button data-filter="terracotta" aria-pressed="false">Terracotta</button><button data-filter="cobalt" aria-pressed="false">Cobalt</button><button data-filter="plum" aria-pressed="false">Aubergine</button><button data-filter="copper" aria-pressed="false">Copper</button><button data-filter="graphite" aria-pressed="false">Graphite</button><button data-filter="marigold" aria-pressed="false">Marigold</button></nav><div class="comparison" id="comparison" aria-label="Light and dark theme pairs"></div><p class="bottom-note">Try Schedule, Bookings, Spaces & crew, or New request inside each preview. Nothing is saved and no real bookings are changed.</p></main><dialog id="large-preview"><div class="dialog-head"><h2 id="large-title"></h2><div class="dialog-actions"><label class="mode-switch compact-switch"><span>Light</span><input id="dialog-dark-mode" type="checkbox" role="switch" aria-label="Dark mode for expanded preview"><span class="switch-track" aria-hidden="true"></span><span>Dark</span></label><button class="close-preview" id="close-preview">Close preview</button></div></div><div class="expanded" id="large-content"></div></dialog>
+<script>
+const pairs=[
+  {
+    "id": "terracotta",
+    "name": "Terracotta",
+    "description": "Warm paper and burnt orange. Closest to the earlier design.",
+    "light": {
+      "bg": "#f2eee5",
+      "panel": "#fffaf2",
+      "ink": "#302b27",
+      "muted": "#6b5e54",
+      "accent": "#a84429",
+      "on-accent": "#ffffff",
+      "accent-soft": "#f4e0d2",
+      "active-text": "#853922",
+      "summary": "#eae2d5",
+      "row": "#f4efe4",
+      "grid": "#e5ded2",
+      "border": "#dfd4c5",
+      "control": "#a49380",
+      "event-a": "#eed2bb",
+      "event-a-text": "#6c3e25",
+      "event-b": "#e5d9c5",
+      "event-b-text": "#614c2e",
+      "event-c": "#dcdceb",
+      "event-c-text": "#494760"
+    },
+    "dark": {
+      "bg": "#241d1b",
+      "panel": "#302622",
+      "ink": "#f3ece5",
+      "muted": "#c4b4a8",
+      "accent": "#eea27b",
+      "on-accent": "#2a1c15",
+      "accent-soft": "#50372b",
+      "active-text": "#f5bea0",
+      "summary": "#382d28",
+      "row": "#352b26",
+      "grid": "#493b33",
+      "border": "#534238",
+      "control": "#b39482",
+      "event-a": "#624332",
+      "event-a-text": "#f8d5be",
+      "event-b": "#524936",
+      "event-b-text": "#efdbb4",
+      "event-c": "#454052",
+      "event-c-text": "#ded5f1"
+    }
+  },
+  {
+    "id": "cobalt",
+    "name": "Cobalt",
+    "description": "Cool neutrals with a clear blue accent.",
+    "light": {
+      "bg": "#eef0f4",
+      "panel": "#ffffff",
+      "ink": "#243047",
+      "muted": "#596578",
+      "accent": "#3157b7",
+      "on-accent": "#ffffff",
+      "accent-soft": "#e2e9fb",
+      "active-text": "#294994",
+      "summary": "#e3e8f1",
+      "row": "#f1f4f9",
+      "grid": "#e1e6ee",
+      "border": "#d4dce8",
+      "control": "#8898b2",
+      "event-a": "#d1ddf6",
+      "event-a-text": "#2a477f",
+      "event-b": "#f1dec0",
+      "event-b-text": "#6b4c25",
+      "event-c": "#e2daf1",
+      "event-c-text": "#584371"
+    },
+    "dark": {
+      "bg": "#171e2b",
+      "panel": "#232d40",
+      "ink": "#edf1fa",
+      "muted": "#b1bdd2",
+      "accent": "#9cb7ff",
+      "on-accent": "#182441",
+      "accent-soft": "#303f5f",
+      "active-text": "#c6d6ff",
+      "summary": "#283247",
+      "row": "#283349",
+      "grid": "#37465f",
+      "border": "#40516d",
+      "control": "#899ec4",
+      "event-a": "#344970",
+      "event-a-text": "#d3e0ff",
+      "event-b": "#514635",
+      "event-b-text": "#f3dfbc",
+      "event-c": "#463b5e",
+      "event-c-text": "#e6d6ff"
+    }
+  },
+  {
+    "id": "plum",
+    "name": "Aubergine",
+    "description": "Soft rose in light mode, richer plum after dark.",
+    "light": {
+      "bg": "#f2edf0",
+      "panel": "#fffafb",
+      "ink": "#352737",
+      "muted": "#6c5b70",
+      "accent": "#764568",
+      "on-accent": "#ffffff",
+      "accent-soft": "#eddfeb",
+      "active-text": "#603b58",
+      "summary": "#e9dfe5",
+      "row": "#f5edf1",
+      "grid": "#e7dce3",
+      "border": "#dfd1db",
+      "control": "#ac8f9f",
+      "event-a": "#e6cee0",
+      "event-a-text": "#693e60",
+      "event-b": "#eddfc9",
+      "event-b-text": "#684d2e",
+      "event-c": "#f0d4d2",
+      "event-c-text": "#794540"
+    },
+    "dark": {
+      "bg": "#241b27",
+      "panel": "#312536",
+      "ink": "#f4eaf3",
+      "muted": "#c7b5c9",
+      "accent": "#d9a6ce",
+      "on-accent": "#302034",
+      "accent-soft": "#4d354c",
+      "active-text": "#efc7e7",
+      "summary": "#392c3f",
+      "row": "#392b3d",
+      "grid": "#4b3a50",
+      "border": "#56405a",
+      "control": "#b894b8",
+      "event-a": "#593b55",
+      "event-a-text": "#f0d1e8",
+      "event-b": "#544534",
+      "event-b-text": "#f1ddbd",
+      "event-c": "#593d40",
+      "event-c-text": "#f2d0ce"
+    }
+  },
+  {
+    "id": "copper",
+    "name": "Copper",
+    "description": "Sand and copper by day, charcoal and warm metal at night.",
+    "light": {
+      "bg": "#f4eee7",
+      "panel": "#fffaf5",
+      "ink": "#3b2f2a",
+      "muted": "#756255",
+      "accent": "#a65a25",
+      "on-accent": "#ffffff",
+      "accent-soft": "#f0dfcc",
+      "active-text": "#824318",
+      "summary": "#ece3d9",
+      "row": "#f5eee5",
+      "grid": "#e7ddd0",
+      "border": "#ddcebe",
+      "control": "#a48b72",
+      "event-a": "#ebd6bd",
+      "event-a-text": "#704722",
+      "event-b": "#dadfea",
+      "event-b-text": "#424f68",
+      "event-c": "#e4d8e7",
+      "event-c-text": "#614368"
+    },
+    "dark": {
+      "bg": "#1c2028",
+      "panel": "#262c36",
+      "ink": "#edece7",
+      "muted": "#b5bbc5",
+      "accent": "#e6a56b",
+      "on-accent": "#211c18",
+      "accent-soft": "#473b32",
+      "active-text": "#efc096",
+      "summary": "#2b313b",
+      "row": "#2c323e",
+      "grid": "#383f4b",
+      "border": "#3c4350",
+      "control": "#838d9c",
+      "event-a": "#574937",
+      "event-a-text": "#f4d8b7",
+      "event-b": "#34485e",
+      "event-b-text": "#cadcf3",
+      "event-c": "#493c59",
+      "event-c-text": "#e2cfee"
+    }
+  },
+  {
+    "id": "graphite",
+    "name": "Graphite",
+    "description": "A restrained monochrome pair. Minimal colour, strong structure.",
+    "light": {
+      "bg": "#f1f1ef",
+      "panel": "#ffffff",
+      "ink": "#2d2d2c",
+      "muted": "#656561",
+      "accent": "#363636",
+      "on-accent": "#ffffff",
+      "accent-soft": "#e2e2df",
+      "active-text": "#333333",
+      "summary": "#e7e7e3",
+      "row": "#f4f4f1",
+      "grid": "#e2e2dd",
+      "border": "#d7d7d1",
+      "control": "#90908a",
+      "event-a": "#d7d7d0",
+      "event-a-text": "#383833",
+      "event-b": "#e5ded3",
+      "event-b-text": "#544a3d",
+      "event-c": "#dedee7",
+      "event-c-text": "#4b4b61"
+    },
+    "dark": {
+      "bg": "#1c1c1f",
+      "panel": "#28282d",
+      "ink": "#f1f1ed",
+      "muted": "#bcbcc3",
+      "accent": "#deded6",
+      "on-accent": "#222225",
+      "accent-soft": "#3b3b40",
+      "active-text": "#e4e4de",
+      "summary": "#303035",
+      "row": "#303035",
+      "grid": "#414147",
+      "border": "#46464d",
+      "control": "#96969f",
+      "event-a": "#44444a",
+      "event-a-text": "#ecece4",
+      "event-b": "#4b4540",
+      "event-b-text": "#eaddd0",
+      "event-c": "#444352",
+      "event-c-text": "#e2dff2"
+    }
+  },
+  {
+    "id": "marigold",
+    "name": "Marigold",
+    "description": "Warm white and golden yellow, paired with a dark amber workspace.",
+    "light": {
+      "bg": "#f5f1e8",
+      "panel": "#fffdf6",
+      "ink": "#3b3426",
+      "muted": "#716650",
+      "accent": "#edbe48",
+      "on-accent": "#342907",
+      "accent-soft": "#f6e8b8",
+      "active-text": "#6f4e15",
+      "summary": "#eee7d5",
+      "row": "#f8f3e5",
+      "grid": "#e9e1cb",
+      "border": "#dfd2b1",
+      "control": "#a18b60",
+      "event-a": "#efdfab",
+      "event-a-text": "#69501e",
+      "event-b": "#d9e0ed",
+      "event-b-text": "#41506c",
+      "event-c": "#e8d9e3",
+      "event-c-text": "#67465c"
+    },
+    "dark": {
+      "bg": "#242018",
+      "panel": "#302a1e",
+      "ink": "#f5edda",
+      "muted": "#c8bba0",
+      "accent": "#efc65d",
+      "on-accent": "#30250f",
+      "accent-soft": "#4b3e24",
+      "active-text": "#f4d58c",
+      "summary": "#393121",
+      "row": "#383021",
+      "grid": "#4c402c",
+      "border": "#594a31",
+      "control": "#b5a070",
+      "event-a": "#574826",
+      "event-a-text": "#f5dfa2",
+      "event-b": "#354257",
+      "event-b-text": "#d2def6",
+      "event-c": "#4c394b",
+      "event-c-text": "#ecd1e7"
+    }
+  }
+];
+const cssVars=t=>Object.entries(t.colors).map(([key,value])=>'--'+key+':'+value).join(';');
+const board=t=>'<div class="board" data-theme="'+t.id+'" style="'+cssVars(t)+'"><header class="board-header"><div class="board-logo"><span class="logo-mark" aria-hidden="true"><i></i><i></i><i></i></span>event<span>sync</span></div><span class="connected">Connected</span></header><div class="board-layout"><nav class="board-nav" aria-label="'+t.name+' sample navigation"><button data-tab="schedule" aria-pressed="true">Schedule</button><button data-tab="bookings" aria-pressed="false">Bookings</button><button data-tab="venues" aria-pressed="false">Spaces & crew</button></nav><div class="board-main"><div class="board-title"><div><h3>Schedule</h3><p>Manage halls, equipment and crew.</p></div><button class="new-request" data-tab="request">＋ New request</button></div><div class="board-content">'+schedule()+'</div></div></div></div>';
+function schedule(){return '<div class="summary"><div><span>Confirmed events</span><strong>3</strong></div><div><span>Expected guests</span><strong>270</strong></div><div><span>Halls</span><strong>6</strong></div></div><div class="schedule-panel"><div class="schedule-heading"><h4>Hall availability</h4><span class="date">30 Oct 2026</span></div><div class="schedule-legend"><span><i></i>Event time</span><span><i class="buffer"></i>Setup and cleanup</span></div><div class="timetable"><div class="axis"><div>Hall</div><div class="times"><span>08</span><span>12</span><span>16</span><span>20</span><span>22</span></div></div><div class="row"><div class="hall">A1</div><div class="lane"><div class="event" style="left:17.857%;width:28.571%"><span>Design workshop</span></div></div></div><div class="row"><div class="hall">A2</div><div class="lane"><div class="event" style="left:10.714%;width:28.571%"><span>Annual conference</span></div></div></div><div class="row"><div class="hall">B1</div><div class="lane"><div class="event b" style="left:33.929%;width:19.643%"><span>Product launch</span></div></div></div><div class="row"><div class="hall">B2</div><div class="lane"><span class="open">Available</span></div></div><div class="row"><div class="hall">C1</div><div class="lane"><span class="open">Available</span></div></div><div class="row"><div class="hall">C2</div><div class="lane"><span class="open">Available</span></div></div></div><div class="board-note">30-minute setup and cleanup included.</div></div><div class="booking-strip"><div><strong>Annual conference</strong><small>10:00–13:00 · Hall A2 · 120 guests</small></div><span class="status">Confirmed</span></div>';}
+function bookings(){return '<div class="schedule-panel"><div class="schedule-heading"><h4>Booking register</h4><span class="date">3 requests</span></div><div class="table-overflow"><table class="board-table"><thead><tr><th>Event</th><th>Hall</th><th>Status</th></tr></thead><tbody><tr><td><strong>Annual conference</strong><small>Northstar Co. · 10:00–13:00</small></td><td>A2</td><td><span class="status">Confirmed</span></td></tr><tr><td><strong>Design workshop</strong><small>Studio Collective · 11:00–14:00</small></td><td>A1</td><td><span class="status">Confirmed</span></td></tr><tr><td><strong>Product launch</strong><small>Horizon Labs · 13:15–15:00</small></td><td>B1</td><td><span class="status">Confirmed</span></td></tr></tbody></table></div></div>';}
+function venues(){return '<div class="schedule-panel"><div class="schedule-heading"><h4>Spaces & crew</h4></div><div class="venue-options"><article class="venue-option"><b>A</b><strong>Atrium</strong><p>60 & 150 seats</p><p>2 projectors<br>2 audio systems<br>5 staff</p></article><article class="venue-option"><b>B</b><strong>Boulevard</strong><p>100 & 200 seats</p><p>2 projectors<br>1 audio system<br>4 staff</p></article><article class="venue-option"><b>C</b><strong>Crescent</strong><p>80 & 250 seats</p><p>3 projectors<br>2 audio systems<br>6 staff</p></article></div></div>';}
+function request(){return '<form class="request-preview"><h4>New event request</h4><div class="request-fields"><label>Event name<input value="Team offsite" aria-label="Sample event name"></label><label>Client<input value="Northstar Co." aria-label="Sample client"></label><label>Starts at<input type="time" value="10:00" aria-label="Sample start time"></label><label>Expected guests<input type="number" value="50" min="1" aria-label="Sample attendees"></label></div><p class="request-hint">Setup and cleanup are checked with every allocation.</p><div class="preview-submit"><button class="outline-button" type="button" data-check>Check availability</button><button class="new-request" type="submit">Confirm booking</button></div><div class="preview-result" role="status"></div></form>';}
+
+const comparison=document.querySelector('#comparison');
+const globalSwitch=document.querySelector('#dark-mode');
+const compareButton=document.querySelector('#compare-button');
+let selectedMode='light',compareBoth=true,selectedPair='all',expandedPair=null;
+try { selectedMode=localStorage.getItem('eventsync-demo-mode') || (window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'); } catch { selectedMode='light'; }
+if(!['light','dark'].includes(selectedMode))selectedMode='light';
+function variant(pair,mode){return {id:pair.id+'-'+mode,name:pair.name+' — '+(mode==='dark'?'Dark':'Light'),colors:pair[mode]};}
+function card(pair,mode){const t=variant(pair,mode);return '<article class="theme-card" data-variant="'+mode+'" style="'+cssVars(t)+'"><header class="theme-info"><div><h3>'+ (mode==='dark'?'Dark':'Light')+'</h3><div class="swatches" aria-label="'+t.name+' palette">'+['bg','panel','ink','accent','accent-soft'].map(k=>'<span class="swatch" style="background:'+t.colors[k]+'" title="'+k+': '+t.colors[k]+'"></span>').join('')+'</div></div><button data-enlarge="'+pair.id+'" data-open-mode="'+mode+'">View larger ↗</button></header>'+board(t)+'</article>';}
+comparison.innerHTML=pairs.map(pair=>'<section class="theme-pair" data-pair="'+pair.id+'" aria-labelledby="title-'+pair.id+'"><header class="pair-head"><h2 id="title-'+pair.id+'">'+pair.name+'</h2><p>'+pair.description+'</p></header>'+card(pair,'light')+card(pair,'dark')+'</section>').join('');
+function syncDisplay(){
+ document.documentElement.dataset.mode=selectedMode;
+ globalSwitch.checked=selectedMode==='dark';
+ compareButton.setAttribute('aria-pressed',String(compareBoth));
+ document.querySelector('#mode-description').textContent=compareBoth?'Light and dark shown together.':(selectedMode==='dark'?'Dark themes shown.':'Light themes shown.');
+ document.querySelectorAll('[data-pair]').forEach(el=>{
+   el.hidden=selectedPair!=='all'&&el.dataset.pair!==selectedPair;
+   el.classList.toggle('single-mode',!compareBoth);
+   el.querySelectorAll('[data-variant]').forEach(card=>card.hidden=!compareBoth&&card.dataset.variant!==selectedMode);
+ });
+ document.querySelectorAll('[data-filter]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.filter===selectedPair)));
+ try{localStorage.setItem('eventsync-demo-mode',selectedMode);}catch{}
+}
+function updateMode(mode){selectedMode=mode;compareBoth=false;syncDisplay();}
+globalSwitch.addEventListener('change',()=>updateMode(globalSwitch.checked?'dark':'light'));
+compareButton.addEventListener('click',()=>{compareBoth=!compareBoth;syncDisplay();});
+function expand(pairId,mode){
+ const pair=pairs.find(p=>p.id===pairId);if(!pair)return;
+ expandedPair=pair.id;
+ document.querySelector('#large-title').textContent=pair.name;
+ document.querySelector('#dialog-dark-mode').checked=mode==='dark';
+ document.querySelector('#large-content').innerHTML=board(variant(pair,mode));
+ document.querySelector('#large-preview').dataset.previewMode=mode;
+ if(!document.querySelector('#large-preview').open)document.querySelector('#large-preview').showModal();
+}
+document.querySelector('#dialog-dark-mode').addEventListener('change',e=>{
+ const mode=e.target.checked?'dark':'light';
+ const activeBoard=document.querySelector('#large-content .board');
+ const pair=pairs.find(p=>p.id===expandedPair),t=variant(pair,mode);
+ activeBoard.setAttribute('style',cssVars(t));activeBoard.dataset.theme=t.id;
+ document.querySelector('#large-preview').dataset.previewMode=mode;
+ // Keep the open tab and any typed demo fields when switching modes.
+});
+document.addEventListener('click',e=>{
+ const filter=e.target.closest('[data-filter]');if(filter){selectedPair=filter.dataset.filter;syncDisplay();return;}
+ const enlarge=e.target.closest('[data-enlarge]');if(enlarge){expand(enlarge.dataset.enlarge,enlarge.dataset.openMode);return;}
+ const tab=e.target.closest('[data-tab]');if(tab){const target=tab.closest('.board'),key=tab.dataset.tab;target.querySelectorAll('.board-nav button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.tab===key)));target.querySelector('h3').textContent={schedule:'Schedule',bookings:'Bookings',venues:'Spaces & crew',request:'New request'}[key];target.querySelector('.board-title p').textContent={schedule:'Manage halls, equipment and crew.',bookings:'Requests and allocations in one view.',venues:'Capacity, equipment and people.',request:'Preview form colours and controls.'}[key];target.querySelector('.board-content').innerHTML={schedule,bookings,venues,request}[key]();return;}
+ const check=e.target.closest('[data-check]');if(check)check.closest('form').querySelector('.preview-result').textContent='Preview: Hall A1 is available. No real availability check was made.';
+});
+document.addEventListener('submit',e=>{if(e.target.matches('.request-preview')){e.preventDefault();e.target.querySelector('.preview-result').textContent='Demo only — no booking was created.';}});
+document.querySelector('#close-preview').onclick=()=>document.querySelector('#large-preview').close();
+syncDisplay();
+
+</script></body></html>
